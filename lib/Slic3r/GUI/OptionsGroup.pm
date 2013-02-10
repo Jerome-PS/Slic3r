@@ -4,6 +4,7 @@ use Moo;
 use List::Util qw(first);
 use Wx qw(:combobox :font :misc :sizer :systemsettings :textctrl);
 use Wx::Event qw(EVT_CHECKBOX EVT_COMBOBOX EVT_SPINCTRL EVT_TEXT);
+use Locale::gettext;
 
 =head1 NAME
 
@@ -206,7 +207,7 @@ sub _build_field {
         };
         $self->_setters->{$opt_key}->($opt->{default});
     } else {
-        die "Unsupported option type: " . $opt->{type};
+        die use gettext("Unsupported option type: ") . $opt->{type};
     }
     $field->SetToolTipString($opt->{tooltip}) if $opt->{tooltip} && $field->can('SetToolTipString');
     return $field;

@@ -13,6 +13,8 @@ use Wx qw(:bitmap :brush :button :cursor :dialog :filedialog :font :keycode :ico
 use Wx::Event qw(EVT_BUTTON EVT_COMMAND EVT_KEY_DOWN EVT_LIST_ITEM_ACTIVATED EVT_LIST_ITEM_DESELECTED EVT_LIST_ITEM_SELECTED EVT_MOUSE_EVENTS EVT_PAINT EVT_TOOL EVT_CHOICE);
 use base 'Wx::Panel';
 
+use Locale::gettext;
+
 use constant TB_MORE    => &Wx::NewId;
 use constant TB_LESS    => &Wx::NewId;
 use constant TB_45CW    => &Wx::NewId;
@@ -29,8 +31,8 @@ my $EXPORT_FAILED_EVENT     : shared = Wx::NewEventType;
 
 use constant CANVAS_SIZE => [300,300];
 use constant CANVAS_TEXT => join('-', +(localtime)[3,4]) eq '13-8'
-    ? 'What do you want to print today? ™' # Sept. 13, 2006. The first part ever printed by a RepRap to make another RepRap.
-    : 'Drag your objects here';
+    ? gettext('What do you want to print today? ™') # Sept. 13, 2006. The first part ever printed by a RepRap to make another RepRap.
+    : gettext('Drag your objects here');
 use constant FILAMENT_CHOOSERS_SPACING => 3;
 
 sub new {
@@ -61,19 +63,19 @@ sub new {
     if (!&Wx::wxMSW) {
         Wx::ToolTip::Enable(1);
         $self->{htoolbar} = Wx::ToolBar->new($self, -1, wxDefaultPosition, wxDefaultSize, wxTB_HORIZONTAL | wxTB_TEXT | wxBORDER_SIMPLE | wxTAB_TRAVERSAL);
-        $self->{htoolbar}->AddTool(TB_MORE, "More", Wx::Bitmap->new("$Slic3r::var/add.png", wxBITMAP_TYPE_PNG), '');
-        $self->{htoolbar}->AddTool(TB_LESS, "Fewer", Wx::Bitmap->new("$Slic3r::var/delete.png", wxBITMAP_TYPE_PNG), '');
+        $self->{htoolbar}->AddTool(TB_MORE, gettext("More"), Wx::Bitmap->new("$Slic3r::var/add.png", wxBITMAP_TYPE_PNG), '');
+        $self->{htoolbar}->AddTool(TB_LESS, gettext("Fewer"), Wx::Bitmap->new("$Slic3r::var/delete.png", wxBITMAP_TYPE_PNG), '');
         $self->{htoolbar}->AddSeparator;
-        $self->{htoolbar}->AddTool(TB_45CCW, "45° ccw", Wx::Bitmap->new("$Slic3r::var/arrow_rotate_anticlockwise.png", wxBITMAP_TYPE_PNG), '');
-        $self->{htoolbar}->AddTool(TB_45CW, "45° cw", Wx::Bitmap->new("$Slic3r::var/arrow_rotate_clockwise.png", wxBITMAP_TYPE_PNG), '');
-        $self->{htoolbar}->AddTool(TB_ROTATE, "Rotate…", Wx::Bitmap->new("$Slic3r::var/arrow_rotate_clockwise.png", wxBITMAP_TYPE_PNG), '');
+        $self->{htoolbar}->AddTool(TB_45CCW, gettext("45° ccw"), Wx::Bitmap->new("$Slic3r::var/arrow_rotate_anticlockwise.png", wxBITMAP_TYPE_PNG), '');
+        $self->{htoolbar}->AddTool(TB_45CW, gettext("45° cw"), Wx::Bitmap->new("$Slic3r::var/arrow_rotate_clockwise.png", wxBITMAP_TYPE_PNG), '');
+        $self->{htoolbar}->AddTool(TB_ROTATE, gettext("Rotate…"), Wx::Bitmap->new("$Slic3r::var/arrow_rotate_clockwise.png", wxBITMAP_TYPE_PNG), '');
         $self->{htoolbar}->AddSeparator;
-        $self->{htoolbar}->AddTool(TB_SCALE, "Scale…", Wx::Bitmap->new("$Slic3r::var/arrow_out.png", wxBITMAP_TYPE_PNG), '');
+        $self->{htoolbar}->AddTool(TB_SCALE, gettext("Scale…"), Wx::Bitmap->new("$Slic3r::var/arrow_out.png", wxBITMAP_TYPE_PNG), '');
         $self->{htoolbar}->AddSeparator;
-        $self->{htoolbar}->AddTool(TB_SPLIT, "Split", Wx::Bitmap->new("$Slic3r::var/shape_ungroup.png", wxBITMAP_TYPE_PNG), '');
+        $self->{htoolbar}->AddTool(TB_SPLIT, gettext("Split"), Wx::Bitmap->new("$Slic3r::var/shape_ungroup.png", wxBITMAP_TYPE_PNG), '');
     } else {
-        my %tbar_buttons = (increase => "More", decrease => "Less", rotate45ccw => "45°", rotate45cw => "45°",
-            rotate => "Rotate…", changescale => "Scale…", split => "Split");
+        my %tbar_buttons = (increase => gettext("More"), decrease => gettext("Less"), rotate45ccw => gettext("45°"), rotate45cw => gettext("45°"),
+            rotate => gettext("Rotate…"), changescale => gettext("Scale…"), split => gettext("Split"));
         $self->{btoolbar} = Wx::BoxSizer->new(wxHORIZONTAL);
         for (qw(increase decrease rotate45ccw rotate45cw rotate changescale split)) {
             $self->{"btn_$_"} = Wx::Button->new($self, -1, $tbar_buttons{$_}, wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
@@ -82,9 +84,9 @@ sub new {
     }
 
     $self->{list} = Wx::ListView->new($self, -1, wxDefaultPosition, [-1, 180], wxLC_SINGLE_SEL | wxLC_REPORT | wxBORDER_SUNKEN | wxTAB_TRAVERSAL | wxWANTS_CHARS);
-    $self->{list}->InsertColumn(0, "Name", wxLIST_FORMAT_LEFT, 300);
-    $self->{list}->InsertColumn(1, "Copies", wxLIST_FORMAT_CENTER, 50);
-    $self->{list}->InsertColumn(2, "Scale", wxLIST_FORMAT_CENTER, wxLIST_AUTOSIZE_USEHEADER);
+    $self->{list}->InsertColumn(0, gettext("Name"), wxLIST_FORMAT_LEFT, 300);
+    $self->{list}->InsertColumn(1, gettext("Copies"), wxLIST_FORMAT_CENTER, 50);
+    $self->{list}->InsertColumn(2, gettext("Scale"), wxLIST_FORMAT_CENTER, wxLIST_AUTOSIZE_USEHEADER);
     EVT_LIST_ITEM_SELECTED($self, $self->{list}, \&list_item_selected);
     EVT_LIST_ITEM_DESELECTED($self, $self->{list}, \&list_item_deselected);
     EVT_LIST_ITEM_ACTIVATED($self, $self->{list}, \&list_item_activated);
@@ -98,12 +100,12 @@ sub new {
     });
     
     # general buttons
-    $self->{btn_load} = Wx::Button->new($self, -1, "Add…", wxDefaultPosition, wxDefaultSize, wxBU_LEFT);
-    $self->{btn_remove} = Wx::Button->new($self, -1, "Delete", wxDefaultPosition, wxDefaultSize, wxBU_LEFT);
-    $self->{btn_reset} = Wx::Button->new($self, -1, "Delete All", wxDefaultPosition, wxDefaultSize, wxBU_LEFT);
-    $self->{btn_arrange} = Wx::Button->new($self, -1, "Autoarrange", wxDefaultPosition, wxDefaultSize, wxBU_LEFT);
-    $self->{btn_export_gcode} = Wx::Button->new($self, -1, "Export G-code…", wxDefaultPosition, wxDefaultSize, wxBU_LEFT);
-    $self->{btn_export_stl} = Wx::Button->new($self, -1, "Export STL…", wxDefaultPosition, wxDefaultSize, wxBU_LEFT);
+    $self->{btn_load} = Wx::Button->new($self, -1, gettext("Add…"), wxDefaultPosition, wxDefaultSize, wxBU_LEFT);
+    $self->{btn_remove} = Wx::Button->new($self, -1, gettext("Delete"), wxDefaultPosition, wxDefaultSize, wxBU_LEFT);
+    $self->{btn_reset} = Wx::Button->new($self, -1, gettext("Delete All"), wxDefaultPosition, wxDefaultSize, wxBU_LEFT);
+    $self->{btn_arrange} = Wx::Button->new($self, -1, gettext("Autoarrange"), wxDefaultPosition, wxDefaultSize, wxBU_LEFT);
+    $self->{btn_export_gcode} = Wx::Button->new($self, -1, gettext("Export G-code…"), wxDefaultPosition, wxDefaultSize, wxBU_LEFT);
+    $self->{btn_export_stl} = Wx::Button->new($self, -1, gettext("Export STL…"), wxDefaultPosition, wxDefaultSize, wxBU_LEFT);
     
     if (&Wx::wxVERSION_STRING =~ / 2\.9\.[1-9]/) {
         my %icons = qw(
@@ -213,13 +215,13 @@ sub new {
         my $presets = Wx::BoxSizer->new(wxHORIZONTAL);
         $presets->AddStretchSpacer(1);
         my %group_labels = (
-            print       => 'Print settings',
-            filament    => 'Filament',
-            printer     => 'Printer',
+            print       => gettext('Print settings'),
+            filament    => gettext('Filament'),
+            printer     => gettext('Printer'),
         );
         $self->{preset_choosers} = {};
         $self->{preset_choosers_sizers} = {};
-        for my $group (qw(print filament printer)) {
+        for my $group ((qw(print filament printer))) {
             my $text = Wx::StaticText->new($self, -1, "$group_labels{$group}:", wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT);
             my $choice = Wx::Choice->new($self, -1, wxDefaultPosition, [150, -1], []);
             $self->{preset_choosers}{$group} = [$choice];
@@ -286,7 +288,7 @@ sub load {
     my $self = shift;
     
     my $dir = $Slic3r::GUI::Settings->{recent}{skein_directory} || $Slic3r::GUI::Settings->{recent}{config_directory} || '';
-    my $dialog = Wx::FileDialog->new($self, 'Choose one or more files (STL/OBJ/AMF):', $dir, "", &Slic3r::GUI::SkeinPanel::MODEL_WILDCARD, wxFD_OPEN | wxFD_MULTIPLE | wxFD_FILE_MUST_EXIST);
+    my $dialog = Wx::FileDialog->new($self, gettext('Choose one or more files (STL/OBJ/AMF):'), $dir, "", &Slic3r::GUI::SkeinPanel::MODEL_WILDCARD, wxFD_OPEN | wxFD_MULTIPLE | wxFD_FILE_MUST_EXIST);
     if ($dialog->ShowModal != wxID_OK) {
         $dialog->Destroy;
         return;
@@ -303,7 +305,7 @@ sub load_file {
     $Slic3r::GUI::Settings->{recent}{skein_directory} = dirname($input_file);
     Slic3r::GUI->save_settings;
     
-    my $process_dialog = Wx::ProgressDialog->new('Loading…', "Processing input file…", 100, $self, 0);
+    my $process_dialog = Wx::ProgressDialog->new(gettext('Loading…'), gettext("Processing input file…"), 100, $self, 0);
     $process_dialog->Pulse;
     
     local $SIG{__WARN__} = Slic3r::GUI::warning_catcher($self);
@@ -331,6 +333,7 @@ sub load_file {
     }
     
     $process_dialog->Destroy;
+#jh    $self->statusbar->SetStatusText(gettext("Loaded $input_file"));
     $self->statusbar->SetStatusText("Loaded $input_file");
 }
 
@@ -420,7 +423,7 @@ sub rotate {
     return if !$object->thumbnail;
     
     if (!defined $angle) {
-        $angle = Wx::GetNumberFromUser("", "Enter the rotation angle:", "Rotate", $object->rotate, -364, 364, $self);
+        $angle = Wx::GetNumberFromUser("", gettext("Enter the rotation angle:"), gettext("Rotate"), $object->rotate, -364, 364, $self);
         return if !$angle || $angle == -1;
     }
     
@@ -435,7 +438,7 @@ sub changescale {
     my ($obj_idx, $object) = $self->selected_object;
     
     # max scale factor should be above 2540 to allow importing files exported in inches
-    my $scale = Wx::GetNumberFromUser("", "Enter the scale % for the selected object:", "Scale", $object->scale*100, 0, 5000, $self);
+    my $scale = Wx::GetNumberFromUser("", gettext("Enter the scale % for the selected object:"), gettext("Scale"), $object->scale*100, 0, 5000, $self);
     return if !$scale || $scale == -1;
     
     $self->{list}->SetItem($obj_idx, 2, "$scale%");
@@ -474,7 +477,7 @@ sub split_object {
     my $model_object = $current_object->get_model_object;
     
     if (@{$model_object->volumes} > 1) {
-        Slic3r::GUI::warning_catcher($self)->("The selected object couldn't be splitted because it contains more than one volume/material.");
+        Slic3r::GUI::warning_catcher($self)->(gettext("The selected object couldn't be splitted because it contains more than one volume/material."));
         return;
     }
     
@@ -483,7 +486,7 @@ sub split_object {
     
     my @new_meshes = $mesh->split_mesh;
     if (@new_meshes == 1) {
-        Slic3r::GUI::warning_catcher($self)->("The selected object couldn't be splitted because it already contains a single part.");
+        Slic3r::GUI::warning_catcher($self)->(gettext("The selected object couldn't be splitted because it already contains a single part."));
         return;
     }
     
@@ -518,7 +521,7 @@ sub export_gcode {
     my $self = shift;
     
     if ($self->{export_thread}) {
-        Wx::MessageDialog->new($self, "Another slicing job is currently running.", 'Error', wxOK | wxICON_ERROR)->ShowModal;
+        Wx::MessageDialog->new($self, gettext("Another slicing job is currently running."), gettext('Error'), wxOK | wxICON_ERROR)->ShowModal;
         return;
     }
     
@@ -529,7 +532,7 @@ sub export_gcode {
     $self->{output_file} = $main::opt{output};
     {
         $self->{output_file} = $print->expanded_output_filepath($self->{output_file}, $self->{objects}[0]->input_file);
-        my $dlg = Wx::FileDialog->new($self, 'Save G-code file as:', dirname($self->{output_file}),
+        my $dlg = Wx::FileDialog->new($self, gettext('Save G-code file as:'), dirname($self->{output_file}),
             basename($self->{output_file}), &Slic3r::GUI::SkeinPanel::FILE_WILDCARDS->{gcode}, wxFD_SAVE);
         if ($dlg->ShowModal != wxID_OK) {
             $dlg->Destroy;
@@ -560,7 +563,7 @@ sub export_gcode {
             $self->{export_thread}->kill('KILL')->join;
             $self->{export_thread} = undef;
             $self->statusbar->StopBusy;
-            $self->statusbar->SetStatusText("Export cancelled");
+            $self->statusbar->SetStatusText(gettext("Export cancelled"));
         });
     } else {
         $self->export_gcode2(
@@ -594,7 +597,7 @@ sub export_gcode2 {
     my ($print, $output_file, %params) = @_;
     $Slic3r::Geometry::Clipper::clipper = Math::Clipper->new;
     local $SIG{'KILL'} = sub {
-        Slic3r::debugf "Exporting cancelled; exiting thread...\n";
+        Slic3r::debugf gettext("Exporting cancelled; exiting thread...\n");
         threads->exit();
     } if $Slic3r::have_threads;
     
@@ -620,12 +623,12 @@ sub export_gcode2 {
             } : undef)->($_) for @warnings;
         }
         
-        my $message = "Your files were successfully sliced";
+        my $message = gettext("Your files were successfully sliced");
         if ($print->processing_time) {
-            $message .= ' in';
+            $message .= gettext(' in');
             my $minutes = int($print->processing_time/60);
-            $message .= sprintf " %d minutes and", $minutes if $minutes;
-            $message .= sprintf " %.1f seconds", $print->processing_time - $minutes*60;
+            $message .= sprintf gettext(" %d minutes and"), $minutes if $minutes;
+            $message .= sprintf gettext(" %.1f seconds"), $print->processing_time - $minutes*60;
         }
         $message .= ".";
         $params{on_completed}->($message);
@@ -641,6 +644,7 @@ sub on_export_completed {
     $self->{export_thread} = undef;
     $self->statusbar->SetCancelCallback(undef);
     $self->statusbar->StopBusy;
+#jh    $self->statusbar->SetStatusText(gettext("G-code file exported to $self->{output_file}"));
     $self->statusbar->SetStatusText("G-code file exported to $self->{output_file}");
     &Wx::wxTheApp->notify($message);
 }
@@ -652,7 +656,7 @@ sub on_export_failed {
     $self->{export_thread} = undef;
     $self->statusbar->SetCancelCallback(undef);
     $self->statusbar->StopBusy;
-    $self->statusbar->SetStatusText("Export failed");
+    $self->statusbar->SetStatusText(gettext("Export failed"));
 }
 
 sub export_stl {
@@ -660,6 +664,7 @@ sub export_stl {
         
     my $output_file = $self->_get_export_file('STL') or return;
     Slic3r::Format::STL->write_file($output_file, $self->make_model, binary => 1);
+#jh    $self->statusbar->SetStatusText(gettext("STL file exported to $output_file"));
     $self->statusbar->SetStatusText("STL file exported to $output_file");
 }
 
@@ -668,6 +673,7 @@ sub export_amf {
         
     my $output_file = $self->_get_export_file('AMF') or return;
     Slic3r::Format::AMF->write_file($output_file, $self->make_model);
+#jh    $self->statusbar->SetStatusText(gettext("AMF file exported to $output_file"));
     $self->statusbar->SetStatusText("AMF file exported to $output_file");
 }
 
@@ -681,6 +687,7 @@ sub _get_export_file {
     {
         $output_file = $self->_init_print->expanded_output_filepath($output_file, $self->{objects}[0]->input_file);
         $output_file =~ s/\.gcode$/$suffix/i;
+#jh        my $dlg = Wx::FileDialog->new($self, gettext("Save $format file as:"), dirname($output_file),
         my $dlg = Wx::FileDialog->new($self, "Save $format file as:", dirname($output_file),
             basename($output_file), &Slic3r::GUI::SkeinPanel::MODEL_WILDCARD, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
         if ($dlg->ShowModal != wxID_OK) {

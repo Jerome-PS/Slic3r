@@ -1,0 +1,854 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: slic3r 0.9.8\n"
+"POT-Creation-Date: 2013-02-10 19:02+0100\n"
+"PO-Revision-Date: 2013-02-10 22:18+0100\n"
+"Last-Translator: Jérôme Hamm <jerome.hamm@planete-sciences.org>\n"
+"Language-Team: Planète Sciences <jerome.hamm@planete-sciences.org>\n"
+"Language: Français\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-KeywordsList: __;~~;_;gettext;gettext_noop\n"
+"X-Poedit-Basepath: ../..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: lib/Slic3r/GUI\n"
+
+#: blib/lib/Slic3r/GUI/Plater.pm:106 lib/Slic3r/GUI/Plater.pm:108
+msgid "Export STL…"
+msgstr "Export STL…"
+
+#: lib/Slic3r/GUI.pm:52
+#, perl-format
+msgid "wxWidgets version %s, Wx version %s\n"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:88
+msgid "&Load Config…\tCtrl+L"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:88
+msgid "Load exported configuration file"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:89
+msgid "&Export Config…\tCtrl+E"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:89
+msgid "Export current configuration to file"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:91
+msgid "Q&uick Slice…\tCtrl+U"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:91
+msgid "Slice file"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:92
+msgid "Quick Slice and Save &As…\tCtrl+Alt+U"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:92
+msgid "Slice file and save as"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:93
+msgid "&Repeat Last Quick Slice\tCtrl+Shift+U"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:93
+msgid "Repeat last quick slice"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:96
+msgid "Slice to SV&G…\tCtrl+G"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:96
+msgid "Slice file to SVG"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:98
+msgid "Combine multi-material STL files…"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:98
+msgid "Combine multiple STL files into a single multi-material AMF file"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:100
+msgid "&Quit"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:100
+msgid "Quit Slic3r"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:116
+msgid "Export G-code..."
+msgstr "Export G-code…"
+
+#: lib/Slic3r/GUI.pm:116
+msgid "Export current plate as G-code"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:117
+msgid "Export STL..."
+msgstr "Export STL…"
+
+#: lib/Slic3r/GUI.pm:117
+msgid "Export current plate as STL"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:118
+msgid "Export AMF..."
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:118
+msgid "Export current plate as AMF"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:127
+msgid "Select &Plater Tab\tCtrl+1"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:127
+msgid "Show the plater"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:128
+msgid "Select P&rint Settings Tab\tCtrl+2"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:128
+#, fuzzy
+msgid "Show the print settings"
+msgstr "Param. d'impression"
+
+#: lib/Slic3r/GUI.pm:129
+#, fuzzy
+msgid "Select &Filament Settings Tab\tCtrl+3"
+msgstr "Param. d'impression"
+
+#: lib/Slic3r/GUI.pm:129
+#, fuzzy
+msgid "Show the filament settings"
+msgstr "Param. d'impression"
+
+#: lib/Slic3r/GUI.pm:130
+#, fuzzy
+msgid "Select Print&er Settings Tab\tCtrl+4"
+msgstr "Param. d'impression"
+
+#: lib/Slic3r/GUI.pm:130
+#, fuzzy
+msgid "Show the printer settings"
+msgstr "Param. d'impression"
+
+#: lib/Slic3r/GUI.pm:143
+msgid "Slic3r &Website"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:143
+msgid "Open the Slic3r website in your browser"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:144
+msgid "&Documentation"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:144
+msgid "Open the Slic3r documentation in your browser"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:146
+msgid "&About Slic3r"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:146
+msgid "Show about dialog"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:158
+msgid "&File"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:159
+msgid "&Plater"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:160
+msgid "&Window"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:161
+msgid "&Help"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:196 lib/Slic3r/GUI.pm:208 lib/Slic3r/GUI/Plater.pm:524
+#: lib/Slic3r/GUI/SkeinPanel.pm:91
+msgid "Error"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:221
+msgid "Warning"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:396
+msgid "Slicing Done"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:407 lib/Slic3r/GUI/SkeinPanel.pm:166
+msgid "Slicing Done!"
+msgstr ""
+
+#: lib/Slic3r/GUI/AboutDialog.pm:17
+msgid "About Slic3r"
+msgstr ""
+
+#: lib/Slic3r/GUI/AboutDialog.pm:32
+msgid "Slic3r"
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:264
+msgid "Welcome"
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:266
+msgid "Hello, welcome to Slic3r! This "
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:267
+msgid "To import an existing configuration instead, cancel this "
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:268
+msgid "To continue, click Next."
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:280
+msgid "Firmware Type"
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:282
+msgid "Choose the type of firmware used by your printer, then click Next."
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:295
+msgid "Bed Size"
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:297
+msgid "Enter the size of your printers bed, then click Next."
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:310
+msgid "Nozzle Diameter"
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:312
+msgid "Enter the diameter of your printers hot end nozzle, then click Next."
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:325
+msgid "Filament Diameter"
+msgstr "Diamètre du Fil"
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:327
+msgid "Enter the diameter of your filament, then click Next."
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:328
+msgid ""
+"Good precision is required, so use a caliper and do multiple measurements "
+"along the filament, then compute the average."
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:341
+msgid "Extrusion Temperature"
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:343
+msgid ""
+"Enter the temperature needed for extruding your filament, then click Next."
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:344
+msgid "A rule of thumb is 160 to 230 °C for PLA, and 215 to 250 °C for ABS."
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:357
+msgid "Bed Temperature"
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:359
+msgid ""
+"Enter the bed temperature needed for getting your filament to stick to your "
+"heated bed, then click Next."
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:360
+msgid "A rule of thumb is 60 °C for PLA and 110 °C for ABS."
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:373
+msgid "Congratulations!"
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:373
+msgid "Finish"
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:377
+msgid "Slic3r is now configured for your printer and filament."
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:378
+msgid "To close this "
+msgstr ""
+
+#: lib/Slic3r/GUI/OptionsGroup.pm:210
+msgid "Unsupported option type: "
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:34
+msgid "What do you want to print today? ™"
+msgstr "Que voulez-vous imprimer aujourd'hui? ™"
+
+#: lib/Slic3r/GUI/Plater.pm:35
+msgid "Drag your objects here"
+msgstr "Glissez-déposez vos objets ici"
+
+#: lib/Slic3r/GUI/Plater.pm:66 lib/Slic3r/GUI/Plater.pm:77
+msgid "More"
+msgstr "Plus"
+
+#: lib/Slic3r/GUI/Plater.pm:67
+msgid "Fewer"
+msgstr "Moins"
+
+#: lib/Slic3r/GUI/Plater.pm:69
+msgid "45° ccw"
+msgstr "45° trig"
+
+#: lib/Slic3r/GUI/Plater.pm:70
+msgid "45° cw"
+msgstr "45° hor"
+
+#: lib/Slic3r/GUI/Plater.pm:71 lib/Slic3r/GUI/Plater.pm:78
+msgid "Rotate…"
+msgstr "Pivoter..."
+
+#: lib/Slic3r/GUI/Plater.pm:73 lib/Slic3r/GUI/Plater.pm:78
+msgid "Scale…"
+msgstr "Echelle..."
+
+#: lib/Slic3r/GUI/Plater.pm:75 lib/Slic3r/GUI/Plater.pm:78
+msgid "Split"
+msgstr "Séparer"
+
+#: lib/Slic3r/GUI/Plater.pm:77
+msgid "Less"
+msgstr "Moins"
+
+#: lib/Slic3r/GUI/Plater.pm:77
+msgid "45°"
+msgstr "45°"
+
+#: lib/Slic3r/GUI/Plater.pm:87
+msgid "Name"
+msgstr "Nom"
+
+#: lib/Slic3r/GUI/Plater.pm:88
+msgid "Copies"
+msgstr "Copies"
+
+#: lib/Slic3r/GUI/Plater.pm:89 lib/Slic3r/GUI/Plater.pm:441
+msgid "Scale"
+msgstr "Echelle"
+
+#: lib/Slic3r/GUI/Plater.pm:103
+msgid "Add…"
+msgstr "Ajouter..."
+
+#: lib/Slic3r/GUI/Plater.pm:104
+msgid "Delete"
+msgstr "Effacer"
+
+#: lib/Slic3r/GUI/Plater.pm:105
+msgid "Delete All"
+msgstr "Effacer tout"
+
+#: lib/Slic3r/GUI/Plater.pm:106
+msgid "Autoarrange"
+msgstr "Place. auto."
+
+#: lib/Slic3r/GUI/Plater.pm:107
+msgid "Export G-code…"
+msgstr "Export G-code…"
+
+#: lib/Slic3r/GUI/Plater.pm:218
+msgid "Print settings"
+msgstr "Param. d'impression"
+
+#: lib/Slic3r/GUI/Plater.pm:219 lib/Slic3r/GUI/Tab.pm:536
+#: lib/Slic3r/GUI/Tab.pm:538
+msgid "Filament"
+msgstr "Filament"
+
+#: lib/Slic3r/GUI/Plater.pm:220
+msgid "Printer"
+msgstr "Imprimante"
+
+#: lib/Slic3r/GUI/Plater.pm:291
+msgid "Choose one or more files (STL/OBJ/AMF):"
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:308
+msgid "Loading…"
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:308
+msgid "Processing input file…"
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:426
+msgid "Enter the rotation angle:"
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:426
+msgid "Rotate"
+msgstr "Pivoter"
+
+#: lib/Slic3r/GUI/Plater.pm:441
+#, perl-format
+msgid "Enter the scale % for the selected object:"
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:480
+msgid ""
+"The selected object couldn't be splitted because it contains more than one "
+"volume/material."
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:489
+msgid ""
+"The selected object couldn't be splitted because it already contains a "
+"single part."
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:524
+msgid "Another slicing job is currently running."
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:535
+msgid "Save G-code file as:"
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:566
+msgid "Export cancelled"
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:600
+msgid "Exporting cancelled; exiting thread...\n"
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:626
+msgid "Your files were successfully sliced"
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:628 lib/Slic3r/GUI/SkeinPanel.pm:159
+msgid " in"
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:630 lib/Slic3r/GUI/SkeinPanel.pm:161
+#, perl-format
+msgid " %d minutes and"
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:631 lib/Slic3r/GUI/SkeinPanel.pm:162
+#, perl-format
+msgid " %.1f seconds"
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:659
+msgid "Export failed"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:18
+msgid "STL files (*.stl)|*.stl;*.STL"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:19
+msgid "OBJ files (*.obj)|*.obj;*.OBJ"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:20
+msgid "AMF files (*.amf)|*.amf;*.AMF;*.xml;*.XML"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:21
+msgid "INI files *.ini|*.ini;*.INI"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:22
+msgid "G-code files (*.gcode, *.gco, *.g)|*.gcode;*.GCODE;*.gco;*.GCO;*.g;*.G"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:23
+msgid "SVG files *.svg|*.svg;*.SVG"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:33
+msgid "Plater"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:71
+msgid "Multiple Copies"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:80
+msgid "Choose a file to slice (STL/OBJ/AMF):"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:90
+msgid "No previously sliced file."
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:97
+msgid "File Not Found"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:117 lib/Slic3r/GUI/Tab.pm:852
+msgid "Save "
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:130
+msgid "Slicing…"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:184
+msgid "Save configuration as:"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:203
+msgid "Select configuration to load:"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:241
+msgid "Choose one or more files to combine (STL/OBJ)"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:251
+msgid " or hit Cancel if you have finished"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:261
+msgid "Save multi-material AMF file as:"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:343
+msgid "Unsaved Presets"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:41
+msgid "Save current "
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:42
+msgid "Delete this preset"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:118
+msgid "Are you sure you want to delete the selected preset?"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:118
+#, fuzzy
+msgid "Delete Preset"
+msgstr "Effacer"
+
+#: lib/Slic3r/GUI/Tab.pm:178
+msgid "Default preset"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:181
+msgid "Unsaved Changes"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:388
+#, fuzzy
+msgid "Print Settings"
+msgstr "Param. d'impression"
+
+#: lib/Slic3r/GUI/Tab.pm:393
+msgid "Layers and perimeters"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:395
+msgid "Layer height"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:399
+msgid "Vertical shells"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:403
+msgid "Horizontal shells"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:407
+msgid "Solid layers"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:413 lib/Slic3r/GUI/Tab.pm:424
+#: lib/Slic3r/GUI/Tab.pm:508 lib/Slic3r/GUI/Tab.pm:655
+msgid "Advanced"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:418 lib/Slic3r/GUI/Tab.pm:420
+msgid "Infill"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:429
+msgid "Speed"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:431
+msgid "Speed for print moves"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:435
+msgid "Speed for non-print moves"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:439
+msgid "Modifiers"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:443
+msgid "Acceleration control (advanced)"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:448
+msgid "Skirt and brim"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:450
+msgid "Skirt"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:454
+msgid "Brim"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:459 lib/Slic3r/GUI/Tab.pm:461
+msgid "Support material"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:465
+msgid "Raft"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:470 lib/Slic3r/GUI/Tab.pm:472
+msgid "Notes"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:478
+msgid "Output options"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:480
+msgid "Sequential printing"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:485
+msgid "Extruder clearance (mm)"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:491
+msgid "Output file"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:495
+msgid "Post-processing scripts"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:501
+msgid "Multiple Extruders"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:503 lib/Slic3r/GUI/Tab.pm:645
+msgid "Extruders"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:510
+msgid "Extrusion width"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:515
+msgid "Flow"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:519
+msgid "Other"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:531
+#, fuzzy
+msgid "Filament Settings"
+msgstr "Param. d'impression"
+
+#: lib/Slic3r/GUI/Tab.pm:542
+msgid "Temperature (°C)"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:546
+msgid "Extruder"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:550
+msgid "Bed"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:557
+msgid "Cooling"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:559
+msgid "Enable"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:570
+#, fuzzy
+msgid "Fan settings"
+msgstr "Param. d'impression"
+
+#: lib/Slic3r/GUI/Tab.pm:574
+msgid "Fan speed"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:583
+msgid "Cooling thresholds"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:597
+#, perl-format
+msgid ""
+"If estimated layer time is below ~%ds, fan will run at 100%% and print speed "
+"will be reduced so that no less than %ds are spent on that layer (however, "
+"speed will never be reduced below %dmm/s)."
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:600
+#, perl-format
+msgid ""
+"\n"
+"If estimated layer time is greater, but still below ~%ds, fan will run at a "
+"proportionally decreasing speed between %d%% and %d%%."
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:604
+#, perl-format
+msgid ""
+"\n"
+"During the other layers, fan will always run at %d%%."
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:606
+msgid ""
+"\n"
+"During the other layers, fan will be turned off."
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:624
+#, fuzzy
+msgid "Printer Settings"
+msgstr "Param. d'impression"
+
+#: lib/Slic3r/GUI/Tab.pm:631
+msgid "General"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:633
+msgid "Size and coordinates"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:637
+msgid "Firmware"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:641
+msgid "Capabilities"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:646
+msgid "Number of extruders of the printer."
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:660
+msgid "Custom G-code"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:662
+#, fuzzy
+msgid "Start G-code"
+msgstr "Export G-code…"
+
+#: lib/Slic3r/GUI/Tab.pm:667
+#, fuzzy
+msgid "End G-code"
+msgstr "Export G-code…"
+
+#: lib/Slic3r/GUI/Tab.pm:672
+msgid "Layer change G-code"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:677
+msgid "Tool change G-code"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:708
+msgid "Extruder "
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:710
+msgid "Size"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:714
+msgid "Position (for multi-extruder printers)"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:718
+msgid "Retraction"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:725
+msgid ""
+"Retraction when tool is disabled (advanced settings for multi-extruder "
+"setups)"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:782
+msgid ""
+"Your configuration was imported. However, Slic3r is currently only able to "
+"import settings for the first defined filament. We recommend you don't use "
+"exported configuration files for multi-extruder setups and rely on the built-"
+"in preset management system instead."
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:850
+msgid "Save preset"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:878
+msgid ""
+"The supplied name is not valid; the following characters are not allowed: "
+"<>:/|?*\""
+msgstr ""

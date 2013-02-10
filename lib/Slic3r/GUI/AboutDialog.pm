@@ -9,10 +9,12 @@ use Wx::Print;
 use Wx::Html;
 use base 'Wx::Dialog';
 
+use Locale::gettext;
+
 sub new {
     my $class = shift;
     my ($parent) = @_;
-    my $self = $class->SUPER::new($parent, -1, 'About Slic3r', wxDefaultPosition, [600, 270]);
+    my $self = $class->SUPER::new($parent, -1, gettext('About Slic3r'), wxDefaultPosition, [600, 270]);
 
     $self->SetBackgroundColour(Wx::wxWHITE);
     my $hsizer = Wx::BoxSizer->new(wxHORIZONTAL);
@@ -27,7 +29,7 @@ sub new {
     $hsizer->Add($vsizer, 1, wxEXPAND, 0);
 
     # title
-    my $title = Wx::StaticText->new($self, -1, 'Slic3r', wxDefaultPosition, wxDefaultSize);
+    my $title = Wx::StaticText->new($self, -1, gettext('Slic3r'), wxDefaultPosition, wxDefaultSize);
     my $title_font = Wx::SystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT);
     $title_font->SetWeight(wxFONTWEIGHT_BOLD);
     $title_font->SetFamily(wxFONTFAMILY_ROMAN);
@@ -36,6 +38,7 @@ sub new {
     $vsizer->Add($title, 0, wxALIGN_LEFT | wxTOP, 30);
 
     # version
+#jh    my $version = Wx::StaticText->new($self, -1, gettext("Version $Slic3r::VERSION"), wxDefaultPosition, wxDefaultSize);
     my $version = Wx::StaticText->new($self, -1, "Version $Slic3r::VERSION", wxDefaultPosition, wxDefaultSize);
     my $version_font = Wx::SystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT);
     $version_font->SetPointSize(&Wx::wxMSW ? 9 : 11);
@@ -43,7 +46,7 @@ sub new {
     $vsizer->Add($version, 0, wxALIGN_LEFT | wxBOTTOM, 10);
 
     # text
-    my $text =
+    my $text = gettext(
         '<html>' .
         '<body bgcolor="#ffffff" link="#808080">' .
         '<font color="#808080">' .
@@ -55,7 +58,7 @@ sub new {
         'Contributions by Henrik Brix Andersen, Nicolas Dandrimont, Mark Hindess, Mike Sheldrake and numerous others.' .
         '</font>' .
         '</body>' .
-        '</html>';
+        '</html>');
     my $html = Wx::HtmlWindow->new($self, -1, wxDefaultPosition, wxDefaultSize, wxHW_SCROLLBAR_NEVER);
     my $font = Wx::SystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT);
     my $size = &Wx::wxMSW ? 8 : 10;

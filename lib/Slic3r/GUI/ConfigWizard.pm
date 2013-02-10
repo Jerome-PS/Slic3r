@@ -5,6 +5,7 @@ use utf8;
 
 use Wx;
 use base 'Wx::Wizard';
+use Locale::gettext;
 
 # adhere to various human interface guidelines
 our $wizard = 'Wizard';
@@ -13,6 +14,7 @@ $wizard = 'Assistant' if &Wx::wxMAC || &Wx::wxGTK;
 sub new {
     my $class = shift;
     my ($parent) = @_;
+#jh    my $self = $class->SUPER::new($parent, -1, gettext("Configuration $wizard"));
     my $self = $class->SUPER::new($parent, -1, "Configuration $wizard");
 
     # initialize an empty repository
@@ -253,28 +255,31 @@ sub build_index {
 
 package Slic3r::GUI::ConfigWizard::Page::Welcome;
 use base 'Slic3r::GUI::ConfigWizard::Page';
+use Locale::gettext;
 
 sub new {
     my $class = shift;
     my ($parent) = @_;
-    my $self = $class->SUPER::new($parent, "Welcome to the Slic3r Configuration $wizard", 'Welcome');
+#jh    my $self = $class->SUPER::new($parent, gettext("Welcome to the Slic3r Configuration $wizard"), gettext('Welcome'));
+    my $self = $class->SUPER::new($parent, "Welcome to the Slic3r Configuration $wizard", gettext('Welcome'));
 
-    $self->append_text('Hello, welcome to Slic3r! This '.lc($wizard).' helps you with the initial configuration; just a few settings and you will be ready to print.');
-    $self->append_text('To import an existing configuration instead, cancel this '.lc($wizard).' and use the Open Config menu item found in the File menu.');
-    $self->append_text('To continue, click Next.');
+    $self->append_text(gettext('Hello, welcome to Slic3r! This '.lc($wizard).' helps you with the initial configuration; just a few settings and you will be ready to print.'));
+    $self->append_text(gettext('To import an existing configuration instead, cancel this '.lc($wizard).' and use the Open Config menu item found in the File menu.'));
+    $self->append_text(gettext('To continue, click Next.'));
 
     return $self;
 }
 
 package Slic3r::GUI::ConfigWizard::Page::Firmware;
 use base 'Slic3r::GUI::ConfigWizard::Page';
+use Locale::gettext;
 
 sub new {
     my $class = shift;
     my ($parent) = @_;
-    my $self = $class->SUPER::new($parent, 'Firmware Type');
+    my $self = $class->SUPER::new($parent, gettext('Firmware Type'));
 
-    $self->append_text('Choose the type of firmware used by your printer, then click Next.');
+    $self->append_text(gettext('Choose the type of firmware used by your printer, then click Next.'));
     $self->append_option('gcode_flavor');
 
     return $self;
@@ -282,13 +287,14 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::Bed;
 use base 'Slic3r::GUI::ConfigWizard::Page';
+use Locale::gettext;
 
 sub new {
     my $class = shift;
     my ($parent) = @_;
-    my $self = $class->SUPER::new($parent, 'Bed Size');
+    my $self = $class->SUPER::new($parent, gettext('Bed Size'));
 
-    $self->append_text('Enter the size of your printers bed, then click Next.');
+    $self->append_text(gettext('Enter the size of your printers bed, then click Next.'));
     $self->append_option('bed_size');
 
     return $self;
@@ -296,13 +302,14 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::Nozzle;
 use base 'Slic3r::GUI::ConfigWizard::Page';
+use Locale::gettext;
 
 sub new {
     my $class = shift;
     my ($parent) = @_;
-    my $self = $class->SUPER::new($parent, 'Nozzle Diameter');
+    my $self = $class->SUPER::new($parent, gettext('Nozzle Diameter'));
 
-    $self->append_text('Enter the diameter of your printers hot end nozzle, then click Next.');
+    $self->append_text(gettext('Enter the diameter of your printers hot end nozzle, then click Next.'));
     $self->append_option('nozzle_diameter#0');
 
     return $self;
@@ -310,14 +317,15 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::Filament;
 use base 'Slic3r::GUI::ConfigWizard::Page';
+use Locale::gettext;
 
 sub new {
     my $class = shift;
     my ($parent) = @_;
-    my $self = $class->SUPER::new($parent, 'Filament Diameter');
+    my $self = $class->SUPER::new($parent, gettext('Filament Diameter'));
 
-    $self->append_text('Enter the diameter of your filament, then click Next.');
-    $self->append_text('Good precision is required, so use a caliper and do multiple measurements along the filament, then compute the average.');
+    $self->append_text(gettext('Enter the diameter of your filament, then click Next.'));
+    $self->append_text(gettext('Good precision is required, so use a caliper and do multiple measurements along the filament, then compute the average.'));
     $self->append_option('filament_diameter#0');
 
     return $self;
@@ -325,14 +333,15 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::Temperature;
 use base 'Slic3r::GUI::ConfigWizard::Page';
+use Locale::gettext;
 
 sub new {
     my $class = shift;
     my ($parent) = @_;
-    my $self = $class->SUPER::new($parent, 'Extrusion Temperature');
+    my $self = $class->SUPER::new($parent, gettext('Extrusion Temperature'));
 
-    $self->append_text('Enter the temperature needed for extruding your filament, then click Next.');
-    $self->append_text('A rule of thumb is 160 to 230 °C for PLA, and 215 to 250 °C for ABS.');
+    $self->append_text(gettext('Enter the temperature needed for extruding your filament, then click Next.'));
+    $self->append_text(gettext('A rule of thumb is 160 to 230 °C for PLA, and 215 to 250 °C for ABS.'));
     $self->append_option('temperature#0');
 
     return $self;
@@ -340,14 +349,15 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::BedTemperature;
 use base 'Slic3r::GUI::ConfigWizard::Page';
+use Locale::gettext;
 
 sub new {
     my $class = shift;
     my ($parent) = @_;
-    my $self = $class->SUPER::new($parent, 'Bed Temperature');
+    my $self = $class->SUPER::new($parent, gettext('Bed Temperature'));
 
-    $self->append_text('Enter the bed temperature needed for getting your filament to stick to your heated bed, then click Next.');
-    $self->append_text('A rule of thumb is 60 °C for PLA and 110 °C for ABS.');
+    $self->append_text(gettext('Enter the bed temperature needed for getting your filament to stick to your heated bed, then click Next.'));
+    $self->append_text(gettext('A rule of thumb is 60 °C for PLA and 110 °C for ABS.'));
     $self->append_option('bed_temperature');
 
     return $self;
@@ -355,15 +365,17 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::Finished;
 use base 'Slic3r::GUI::ConfigWizard::Page';
+use Locale::gettext;
 
 sub new {
     my $class = shift;
     my ($parent) = @_;
-    my $self = $class->SUPER::new($parent, 'Congratulations!', 'Finish');
+    my $self = $class->SUPER::new($parent, gettext('Congratulations!'), gettext('Finish'));
 
+#jh    $self->append_text(gettext("You have successfully completed the Slic3r Configuration $wizard. ") .
     $self->append_text("You have successfully completed the Slic3r Configuration $wizard. " .
-                       'Slic3r is now configured for your printer and filament.');
-    $self->append_text('To close this '.lc($wizard).' and apply the newly created configuration, click Finish.');
+                       gettext('Slic3r is now configured for your printer and filament.'));
+    $self->append_text(gettext('To close this '.lc($wizard).' and apply the newly created configuration, click Finish.'));
 
     return $self;
 }

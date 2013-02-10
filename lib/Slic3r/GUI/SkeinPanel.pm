@@ -8,18 +8,19 @@ use Slic3r::Geometry qw(X Y);
 use Wx qw(:dialog :filedialog :font :icon :id :misc :notebook :panel :sizer);
 use Wx::Event qw(EVT_BUTTON);
 use base 'Wx::Panel';
+use Locale::gettext;
 
 our $last_input_file;
 our $last_output_file;
 our $last_config;
 
 use constant FILE_WILDCARDS => {
-    stl     => 'STL files (*.stl)|*.stl;*.STL',
-    obj     => 'OBJ files (*.obj)|*.obj;*.OBJ',
-    amf     => 'AMF files (*.amf)|*.amf;*.AMF;*.xml;*.XML',
-    ini     => 'INI files *.ini|*.ini;*.INI',
-    gcode   => 'G-code files (*.gcode, *.gco, *.g)|*.gcode;*.GCODE;*.gco;*.GCO;*.g;*.G',
-    svg     => 'SVG files *.svg|*.svg;*.SVG',
+    stl     => gettext('STL files (*.stl)|*.stl;*.STL'),
+    obj     => gettext('OBJ files (*.obj)|*.obj;*.OBJ'),
+    amf     => gettext('AMF files (*.amf)|*.amf;*.AMF;*.xml;*.XML'),
+    ini     => gettext('INI files *.ini|*.ini;*.INI'),
+    gcode   => gettext('G-code files (*.gcode, *.gco, *.g)|*.gcode;*.GCODE;*.gco;*.GCO;*.g;*.G'),
+    svg     => gettext('SVG files *.svg|*.svg;*.SVG'),
 };
 use constant MODEL_WILDCARD => join '|', @{&FILE_WILDCARDS}{qw(stl obj amf)};
 
@@ -29,7 +30,7 @@ sub new {
     my $self = $class->SUPER::new($parent, -1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
     
     $self->{tabpanel} = Wx::Notebook->new($self, -1, wxDefaultPosition, wxDefaultSize, wxNB_TOP | wxTAB_TRAVERSAL);
-    $self->{tabpanel}->AddPage($self->{plater} = Slic3r::GUI::Plater->new($self->{tabpanel}), "Plater");
+    $self->{tabpanel}->AddPage($self->{plater} = Slic3r::GUI::Plater->new($self->{tabpanel}), gettext("Plater"));
     $self->{options_tabs} = {};
     
     for my $tab_name (qw(print filament printer)) {
@@ -65,8 +66,9 @@ sub do_slice {
         my $copies = $config->duplicate_grid->[X] * $config->duplicate_grid->[Y];
         $copies = $config->duplicate if $config->duplicate > 1;
         if ($copies > 1) {
+#jh            my $confirmation = Wx::MessageDialog->new($self, gettext("Are you sure you want to slice $copies copies?"),
             my $confirmation = Wx::MessageDialog->new($self, "Are you sure you want to slice $copies copies?",
-                                                      'Multiple Copies', wxICON_QUESTION | wxOK | wxCANCEL);
+                                                      gettext('Multiple Copies'), wxICON_QUESTION | wxOK | wxCANCEL);
             return unless $confirmation->ShowModal == wxID_OK;
         }
         
@@ -75,7 +77,7 @@ sub do_slice {
 
         my $input_file;
         if (!$params{reslice}) {
-            my $dialog = Wx::FileDialog->new($self, 'Choose a file to slice (STL/OBJ/AMF):', $dir, "", MODEL_WILDCARD, wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+            my $dialog = Wx::FileDialog->new($self, gettext('Choose a file to slice (STL/OBJ/AMF):'), $dir, "", MODEL_WILDCARD, wxFD_OPEN | wxFD_FILE_MUST_EXIST);
             if ($dialog->ShowModal != wxID_OK) {
                 $dialog->Destroy;
                 return;
@@ -85,13 +87,14 @@ sub do_slice {
             $last_input_file = $input_file unless $params{export_svg};
         } else {
             if (!defined $last_input_file) {
-                Wx::MessageDialog->new($self, "No previously sliced file.",
-                                       'Error', wxICON_ERROR | wxOK)->ShowModal();
+                Wx::MessageDialog->new($self, gettext("No previously sliced file."),
+                                       gettext('Error'), wxICON_ERROR | wxOK)->ShowModal();
                 return;
             }
             if (! -e $last_input_file) {
+#jh                Wx::MessageDialog->new($self, gettext("Previously sliced file ($last_input_file) not found."),
                 Wx::MessageDialog->new($self, "Previously sliced file ($last_input_file) not found.",
-                                       'File Not Found', wxICON_ERROR | wxOK)->ShowModal();
+                                       gettext('File Not Found'), wxICON_ERROR | wxOK)->ShowModal();
                 return;
             }
             $input_file = $last_input_file;
@@ -111,7 +114,7 @@ sub do_slice {
         } elsif ($params{save_as}) {
             $output_file = $print->expanded_output_filepath($output_file);
             $output_file =~ s/\.gcode$/.svg/i if $params{export_svg};
-            my $dlg = Wx::FileDialog->new($self, 'Save ' . ($params{export_svg} ? 'SVG' : 'G-code') . ' file as:', dirname($output_file),
+            my $dlg = Wx::FileDialog->new($self, gettext('Save ' . ($params{export_svg} ? 'SVG' : 'G-code') . ' file as:'), dirname($output_file),
                 basename($output_file), $params{export_svg} ? FILE_WILDCARDS->{svg} : FILE_WILDCARDS->{gcode}, wxFD_SAVE);
             if ($dlg->ShowModal != wxID_OK) {
                 $dlg->Destroy;
@@ -123,7 +126,8 @@ sub do_slice {
         }
         
         # show processbar dialog
-        $process_dialog = Wx::ProgressDialog->new('Slicing…', "Processing $input_file_basename…", 
+#jh        $process_dialog = Wx::ProgressDialog->new(gettext('Slicing…'), gettext("Processing $input_file_basename…"), 
+        $process_dialog = Wx::ProgressDialog->new(gettext('Slicing…'), "Processing $input_file_basename…", 
             100, $self, 0);
         $process_dialog->Pulse;
         
@@ -149,16 +153,17 @@ sub do_slice {
         $process_dialog->Destroy;
         undef $process_dialog;
         
+#jh        my $message = gettext("$input_file_basename was successfully sliced");
         my $message = "$input_file_basename was successfully sliced";
         if ($print->processing_time) {
-            $message .= ' in';
+            $message .= gettext(' in');
             my $minutes = int($print->processing_time/60);
-            $message .= sprintf " %d minutes and", $minutes if $minutes;
-            $message .= sprintf " %.1f seconds", $print->processing_time - $minutes*60;
+            $message .= sprintf gettext(" %d minutes and"), $minutes if $minutes;
+            $message .= sprintf gettext(" %.1f seconds"), $print->processing_time - $minutes*60;
         }
         $message .= ".";
         &Wx::wxTheApp->notify($message);
-        Wx::MessageDialog->new($self, $message, 'Slicing Done!', 
+        Wx::MessageDialog->new($self, $message, gettext('Slicing Done!'), 
             wxOK | wxICON_INFORMATION)->ShowModal;
     };
     Slic3r::GUI::catch_error($self, sub { $process_dialog->Destroy if $process_dialog });
@@ -176,7 +181,7 @@ sub export_config {
     
     my $dir = $last_config ? dirname($last_config) : $Slic3r::GUI::Settings->{recent}{config_directory} || $Slic3r::GUI::Settings->{recent}{skein_directory} || '';
     my $filename = $last_config ? basename($last_config) : "config.ini";
-    my $dlg = Wx::FileDialog->new($self, 'Save configuration as:', $dir, $filename, 
+    my $dlg = Wx::FileDialog->new($self, gettext('Save configuration as:'), $dir, $filename, 
         FILE_WILDCARDS->{ini}, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
     if ($dlg->ShowModal == wxID_OK) {
         my $file = $dlg->GetPath;
@@ -195,7 +200,7 @@ sub load_config_file {
     if (!$file) {
         return unless $self->check_unsaved_changes;
         my $dir = $last_config ? dirname($last_config) : $Slic3r::GUI::Settings->{recent}{config_directory} || $Slic3r::GUI::Settings->{recent}{skein_directory} || '';
-        my $dlg = Wx::FileDialog->new($self, 'Select configuration to load:', $dir, "config.ini", 
+        my $dlg = Wx::FileDialog->new($self, gettext('Select configuration to load:'), $dir, "config.ini", 
                 FILE_WILDCARDS->{ini}, wxFD_OPEN | wxFD_FILE_MUST_EXIST);
         return unless $dlg->ShowModal == wxID_OK;
         ($file) = $dlg->GetPaths;
@@ -233,7 +238,7 @@ sub combine_stls {
     my @input_files = ();
     my $dir = $Slic3r::GUI::Settings->{recent}{skein_directory} || '';
     {
-        my $dlg_message = 'Choose one or more files to combine (STL/OBJ)';
+        my $dlg_message = gettext('Choose one or more files to combine (STL/OBJ)');
         while (1) {
             my $dialog = Wx::FileDialog->new($self, "$dlg_message:", $dir, "", MODEL_WILDCARD, 
                 wxFD_OPEN | wxFD_MULTIPLE | wxFD_FILE_MUST_EXIST);
@@ -243,7 +248,7 @@ sub combine_stls {
             }
             push @input_files, $dialog->GetPaths;
             $dialog->Destroy;
-            $dlg_message .= " or hit Cancel if you have finished";
+            $dlg_message .= gettext(" or hit Cancel if you have finished");
             $dir = dirname($input_files[0]);
         }
         return if !@input_files;
@@ -253,7 +258,7 @@ sub combine_stls {
     my $output_file = $input_files[0];
     {
         $output_file =~ s/\.(?:stl|obj)$/.amf.xml/i;
-        my $dlg = Wx::FileDialog->new($self, 'Save multi-material AMF file as:', dirname($output_file),
+        my $dlg = Wx::FileDialog->new($self, gettext('Save multi-material AMF file as:'), dirname($output_file),
             basename($output_file), FILE_WILDCARDS->{amf}, wxFD_SAVE);
         if ($dlg->ShowModal != wxID_OK) {
             $dlg->Destroy;
@@ -333,8 +338,9 @@ sub check_unsaved_changes {
     my @dirty = map $_->title, grep $_->is_dirty, values %{$self->{options_tabs}};
     if (@dirty) {
         my $titles = join ', ', @dirty;
+#jh        my $confirm = Wx::MessageDialog->new($self, gettext("You have unsaved changes ($titles). Discard changes and continue anyway?"),
         my $confirm = Wx::MessageDialog->new($self, "You have unsaved changes ($titles). Discard changes and continue anyway?",
-                                             'Unsaved Presets', wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT);
+                                             gettext('Unsaved Presets'), wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT);
         return ($confirm->ShowModal == wxID_YES);
     }
     
