@@ -13,13 +13,18 @@ use List::Util qw(first);
 use Slic3r;
 $|++;
 
-use locale ':not_characters';
-#use Locale::gettext;
-use Locale::Messages qw(:locale_h :libintl_h);
-use POSIX;     # Needed for setlocale()
-#setlocale(LC_MESSAGES, "");
-textdomain("slic3r");
-bindtextdomain("slic3r", ".");
+use Locale::TextDomain ('slic3r', '.');
+
+# The locale category LC_MESSAGES is not exported by the POSIX
+# module on older Perl versions.  
+use Locale::Messages qw (LC_MESSAGES LC_ALL);
+
+use POSIX ('setlocale');
+
+# Set the locale according to our environment.
+setlocale (LC_ALL, '');
+
+print __"More";
 
 our %opt = ();
 my %cli_options = ();
