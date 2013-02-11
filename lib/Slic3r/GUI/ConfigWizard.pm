@@ -5,7 +5,8 @@ use utf8;
 
 use Wx;
 use base 'Wx::Wizard';
-use Locale::gettext;
+#use Locale::gettext;
+use Locale::Messages qw(:locale_h :libintl_h);
 
 # adhere to various human interface guidelines
 our $wizard = 'Wizard';
@@ -255,7 +256,8 @@ sub build_index {
 
 package Slic3r::GUI::ConfigWizard::Page::Welcome;
 use base 'Slic3r::GUI::ConfigWizard::Page';
-use Locale::gettext;
+#use Locale::gettext;
+use Locale::Messages qw(:locale_h :libintl_h);
 
 sub new {
     my $class = shift;
@@ -272,7 +274,8 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::Firmware;
 use base 'Slic3r::GUI::ConfigWizard::Page';
-use Locale::gettext;
+#use Locale::gettext;
+use Locale::Messages qw(:locale_h :libintl_h);
 
 sub new {
     my $class = shift;
@@ -287,7 +290,8 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::Bed;
 use base 'Slic3r::GUI::ConfigWizard::Page';
-use Locale::gettext;
+#use Locale::gettext;
+use Locale::Messages qw(:locale_h :libintl_h);
 
 sub new {
     my $class = shift;
@@ -302,7 +306,8 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::Nozzle;
 use base 'Slic3r::GUI::ConfigWizard::Page';
-use Locale::gettext;
+#use Locale::gettext;
+use Locale::Messages qw(:locale_h :libintl_h);
 
 sub new {
     my $class = shift;
@@ -317,7 +322,8 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::Filament;
 use base 'Slic3r::GUI::ConfigWizard::Page';
-use Locale::gettext;
+#use Locale::gettext;
+use Locale::Messages qw(:locale_h :libintl_h);
 
 sub new {
     my $class = shift;
@@ -333,7 +339,8 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::Temperature;
 use base 'Slic3r::GUI::ConfigWizard::Page';
-use Locale::gettext;
+#use Locale::gettext;
+use Locale::Messages qw(:locale_h :libintl_h);
 
 sub new {
     my $class = shift;
@@ -349,7 +356,8 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::BedTemperature;
 use base 'Slic3r::GUI::ConfigWizard::Page';
-use Locale::gettext;
+#use Locale::gettext;
+use Locale::Messages qw(:locale_h :libintl_h);
 
 sub new {
     my $class = shift;
@@ -365,7 +373,8 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::Finished;
 use base 'Slic3r::GUI::ConfigWizard::Page';
-use Locale::gettext;
+#use Locale::gettext;
+use Locale::Messages qw(:locale_h :libintl_h);
 
 sub new {
     my $class = shift;

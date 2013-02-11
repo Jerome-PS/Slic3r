@@ -8,7 +8,8 @@ use Slic3r::Geometry qw(X Y);
 use Wx qw(:dialog :filedialog :font :icon :id :misc :notebook :panel :sizer);
 use Wx::Event qw(EVT_BUTTON);
 use base 'Wx::Panel';
-use Locale::gettext;
+#use Locale::gettext;
+use Locale::Messages qw(:locale_h :libintl_h);
 
 our $last_input_file;
 our $last_output_file;

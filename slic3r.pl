@@ -14,9 +14,10 @@ use Slic3r;
 $|++;
 
 use locale ':not_characters';
-use Locale::gettext;
+#use Locale::gettext;
+use Locale::Messages qw(:locale_h :libintl_h);
 use POSIX;     # Needed for setlocale()
-setlocale(LC_MESSAGES, "");
+#setlocale(LC_MESSAGES, "");
 textdomain("slic3r");
 bindtextdomain("slic3r", ".");
 

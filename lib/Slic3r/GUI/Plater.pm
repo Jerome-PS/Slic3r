@@ -13,7 +13,8 @@ use Wx qw(:bitmap :brush :button :cursor :dialog :filedialog :font :keycode :ico
 use Wx::Event qw(EVT_BUTTON EVT_COMMAND EVT_KEY_DOWN EVT_LIST_ITEM_ACTIVATED EVT_LIST_ITEM_DESELECTED EVT_LIST_ITEM_SELECTED EVT_MOUSE_EVENTS EVT_PAINT EVT_TOOL EVT_CHOICE);
 use base 'Wx::Panel';
 
-use Locale::gettext;
+#use Locale::gettext;
+use Locale::Messages qw(:locale_h :libintl_h);
 
 use constant TB_MORE    => &Wx::NewId;
 use constant TB_LESS    => &Wx::NewId;

@@ -8,7 +8,8 @@ use List::Util qw(first);
 use Wx qw(:bookctrl :dialog :keycode :icon :id :misc :panel :sizer :treectrl :window);
 use Wx::Event qw(EVT_BUTTON EVT_CHOICE EVT_KEY_DOWN EVT_TREE_SEL_CHANGED);
 use base 'Wx::Panel';
-use Locale::gettext;
+#use Locale::gettext;
+use Locale::Messages qw(:locale_h :libintl_h);
 
 sub new {
     my $class = shift;
@@ -383,7 +384,8 @@ sub sync_presets {
 
 package Slic3r::GUI::Tab::Print;
 use base 'Slic3r::GUI::Tab';
-use Locale::gettext;
+#use Locale::gettext;
+use Locale::Messages qw(:locale_h :libintl_h);
 
 sub name { 'print' }
 sub title { gettext('Print Settings') }
@@ -533,7 +535,8 @@ sub hidden_options { !$Slic3r::have_threads ? qw(threads) : () }
 
 package Slic3r::GUI::Tab::Filament;
 use base 'Slic3r::GUI::Tab';
-use Locale::gettext;
+#use Locale::gettext;
+use Locale::Messages qw(:locale_h :libintl_h);
 
 sub name { 'filament' }
 sub title { gettext('Filament Settings') }
@@ -627,7 +630,8 @@ sub on_value_change {
 
 package Slic3r::GUI::Tab::Printer;
 use base 'Slic3r::GUI::Tab';
-use Locale::gettext;
+#use Locale::gettext;
+use Locale::Messages qw(:locale_h :libintl_h);
 
 sub name { 'printer' }
 sub title { gettext('Printer Settings') }
@@ -852,6 +856,8 @@ package Slic3r::GUI::SavePresetWindow;
 use Wx qw(:combobox :dialog :id :misc :sizer);
 use Wx::Event qw(EVT_BUTTON EVT_TEXT_ENTER);
 use base 'Wx::Dialog';
+#use Locale::gettext;
+use Locale::Messages qw(:locale_h :libintl_h);
 
 sub new {
     my $class = shift;

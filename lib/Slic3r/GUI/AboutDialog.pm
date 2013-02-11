@@ -9,7 +9,8 @@ use Wx::Print;
 use Wx::Html;
 use base 'Wx::Dialog';
 
-use Locale::gettext;
+#use Locale::gettext;
+use Locale::Messages qw(:locale_h :libintl_h);
 
 sub new {
     my $class = shift;
