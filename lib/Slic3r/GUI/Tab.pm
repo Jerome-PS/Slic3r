@@ -383,6 +383,7 @@ sub sync_presets {
 
 package Slic3r::GUI::Tab::Print;
 use base 'Slic3r::GUI::Tab';
+use Locale::gettext;
 
 sub name { 'print' }
 sub title { gettext('Print Settings') }
@@ -532,6 +533,7 @@ sub hidden_options { !$Slic3r::have_threads ? qw(threads) : () }
 
 package Slic3r::GUI::Tab::Filament;
 use base 'Slic3r::GUI::Tab';
+use Locale::gettext;
 
 sub name { 'filament' }
 sub title { gettext('Filament Settings') }
@@ -625,6 +627,7 @@ sub on_value_change {
 
 package Slic3r::GUI::Tab::Printer;
 use base 'Slic3r::GUI::Tab';
+use Locale::gettext;
 
 sub name { 'printer' }
 sub title { gettext('Printer Settings') }

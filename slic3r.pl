@@ -13,13 +13,9 @@ use List::Util qw(first);
 use Slic3r;
 $|++;
 
-#use i18n ".";
 use locale ':not_characters';
-#use POSIX qw(locale_h);
-#use Locale::TextDomain;
 use Locale::gettext;
 use POSIX;     # Needed for setlocale()
-#setlocale (LC_ALL, ""); 
 setlocale(LC_MESSAGES, "");
 textdomain("slic3r");
 bindtextdomain("slic3r", ".");

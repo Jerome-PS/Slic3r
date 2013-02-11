@@ -4,7 +4,6 @@ use Moo;
 use List::Util qw(first);
 use Wx qw(:combobox :font :misc :sizer :systemsettings :textctrl);
 use Wx::Event qw(EVT_CHECKBOX EVT_COMBOBOX EVT_SPINCTRL EVT_TEXT);
-use Locale::gettext;
 
 =head1 NAME
 
@@ -12,47 +11,47 @@ Slic3r::GUI::OptionsGroup - pre-filled Wx::StaticBoxSizer wrapper containing one
 
 =head1 SYNOPSIS
 
-    my $optgroup = Slic3r::GUI::OptionsGroup->new(
-        parent  => $self->parent,
-        title   => 'Layers',
-        options => [
-            {
-                opt_key     => 'layer_height',  # mandatory
-                type        => 'f',             # mandatory
-                label       => 'Layer height',
-                tooltip     => 'This setting controls the height (and thus the total number) of the slices/layers.',
-                sidetext    => 'mm',
-                width       => 200,
-                full_width  => 0,
-                height      => 50,
-                min         => 0,
-                max         => 100,
-                labels      => [],
-                values      => [],
-                default     => 0.4,             # mandatory
-                readonly    => 0,
-                on_change   => sub { print "new value is $_[0]\n" },
-            },
-        ],
-        on_change   => sub { print "new value for $_[0] is $_[1]\n" },
-        no_labels   => 0,
-        label_width => 180,
-    );
-    $sizer->Add($optgroup->sizer);
+my $optgroup = Slic3r::GUI::OptionsGroup->new(
+parent => $self->parent,
+title => 'Layers',
+options => [
+{
+opt_key => 'layer_height', # mandatory
+type => 'f', # mandatory
+label => 'Layer height',
+tooltip => 'This setting controls the height (and thus the total number) of the slices/layers.',
+sidetext => 'mm',
+width => 200,
+full_width => 0,
+height => 50,
+min => 0,
+max => 100,
+labels => [],
+values => [],
+default => 0.4, # mandatory
+readonly => 0,
+on_change => sub { print "new value is $_[0]\n" },
+},
+],
+on_change => sub { print "new value for $_[0] is $_[1]\n" },
+no_labels => 0,
+label_width => 180,
+);
+$sizer->Add($optgroup->sizer);
 
 =cut
 
-has 'parent'        => (is => 'ro', required => 1);
-has 'title'         => (is => 'ro', required => 1);
-has 'options'       => (is => 'ro', required => 1, trigger => 1);
-has 'lines'         => (is => 'lazy');
-has 'on_change'     => (is => 'ro', default => sub { sub {} });
-has 'no_labels'     => (is => 'ro', default => sub { 0 });
-has 'label_width'   => (is => 'ro', default => sub { 180 });
+has 'parent' => (is => 'ro', required => 1);
+has 'title' => (is => 'ro', required => 1);
+has 'options' => (is => 'ro', required => 1, trigger => 1);
+has 'lines' => (is => 'lazy');
+has 'on_change' => (is => 'ro', default => sub { sub {} });
+has 'no_labels' => (is => 'ro', default => sub { 0 });
+has 'label_width' => (is => 'ro', default => sub { 180 });
 
-has 'sizer'         => (is => 'rw');
-has '_triggers'     => (is => 'ro', default => sub { {} });
-has '_setters'      => (is => 'ro', default => sub { {} });
+has 'sizer' => (is => 'rw');
+has '_triggers' => (is => 'ro', default => sub { {} });
+has '_setters' => (is => 'ro', default => sub { {} });
 
 sub _trigger_options {}
 
@@ -90,10 +89,10 @@ sub _build_lines {
     my $lines = [];
     foreach my $opt (@{$self->options}) {
         push @$lines, {
-            label       => $opt->{label},
-            sidetext    => $opt->{sidetext},
-            full_width  => $opt->{full_width},
-            options     => [$opt->{opt_key}],
+            label => $opt->{label},
+            sidetext => $opt->{sidetext},
+            full_width => $opt->{full_width},
+            options => [$opt->{opt_key}],
         };
     }
     return $lines;
@@ -104,9 +103,9 @@ sub single_option_line {
     my ($opt_key) = @_;
     
     return {
-        label       => $Slic3r::Config::Options->{$opt_key}{label},
-        sidetext    => $Slic3r::Config::Options->{$opt_key}{sidetext},
-        options     => [$opt_key],
+        label => $Slic3r::Config::Options->{$opt_key}{label},
+        sidetext => $Slic3r::Config::Options->{$opt_key}{sidetext},
+        options => [$opt_key],
     };
 }
 
@@ -117,7 +116,7 @@ sub _build_line {
     my $label;
     if (!$self->no_labels) {
         $label = Wx::StaticText->new($self->parent, -1, $line->{label} ? "$line->{label}:" : "", wxDefaultPosition, [$self->label_width, -1]);
-        $label->Wrap($self->label_width) ;  # needed to avoid Linux/GTK bug
+        $label->Wrap($self->label_width) ; # needed to avoid Linux/GTK bug
         $grid_sizer->Add($label, 0, wxALIGN_CENTER_VERTICAL, 0);
         $label->SetToolTipString($line->{tooltip}) if $line->{tooltip};
     }
@@ -171,8 +170,8 @@ sub _build_field {
         
         my $on_change = sub { $self->_on_change($opt_key, $field->GetValue) };
         $opt->{type} eq 'i'
-            ? EVT_SPINCTRL  ($self->parent, $field, $on_change)
-            : EVT_TEXT      ($self->parent, $field, $on_change);
+            ? EVT_SPINCTRL ($self->parent, $field, $on_change)
+            : EVT_TEXT ($self->parent, $field, $on_change);
     } elsif ($opt->{type} eq 'bool') {
         $field = Wx::CheckBox->new($self->parent, -1, "");
         $field->SetValue($opt->{default});
@@ -184,7 +183,7 @@ sub _build_field {
         my @items = (
             Wx::StaticText->new($self->parent, -1, "x:"),
                 my $x_field = Wx::TextCtrl->new($self->parent, -1, $opt->{default}->[0], wxDefaultPosition, $field_size),
-            Wx::StaticText->new($self->parent, -1, "  y:"),
+            Wx::StaticText->new($self->parent, -1, " y:"),
                 my $y_field = Wx::TextCtrl->new($self->parent, -1, $opt->{default}->[1], wxDefaultPosition, $field_size),
         );
         $field->Add($_, 0, wxALIGN_CENTER_VERTICAL, 0) for @items;
@@ -207,7 +206,7 @@ sub _build_field {
         };
         $self->_setters->{$opt_key}->($opt->{default});
     } else {
-        die use gettext("Unsupported option type: ") . $opt->{type};
+        die "Unsupported option type: " . $opt->{type};
     }
     $field->SetToolTipString($opt->{tooltip}) if $opt->{tooltip} && $field->can('SetToolTipString');
     return $field;
@@ -261,16 +260,16 @@ Slic3r::GUI::ConfigOptionsGroup - pre-filled Wx::StaticBoxSizer wrapper containi
 
 =head1 SYNOPSIS
 
-    my $optgroup = Slic3r::GUI::ConfigOptionsGroup->new(
-        parent      => $self->parent,
-        title       => 'Layers',
-        config      => $config,
-        options     => ['layer_height'],
-        on_change   => sub { print "new value for $_[0] is $_[1]\n" },
-        no_labels   => 0,
-        label_width => 180,
-    );
-    $sizer->Add($optgroup->sizer);
+my $optgroup = Slic3r::GUI::ConfigOptionsGroup->new(
+parent => $self->parent,
+title => 'Layers',
+config => $config,
+options => ['layer_height'],
+on_change => sub { print "new value for $_[0] is $_[1]\n" },
+no_labels => 0,
+label_width => 180,
+);
+$sizer->Add($optgroup->sizer);
 
 =cut
 
@@ -288,11 +287,11 @@ sub _trigger_options {
             my ($opt_key, $index) = $self->_split_key($full_key);
             my $config_opt = $Slic3r::Config::Options->{$opt_key};
             $opt = {
-                opt_key     => $full_key,
-                config      => 1,
-                (map { $_   => $config_opt->{$_} } qw(type label tooltip sidetext width height full_width min max labels values multiline readonly)),
-                default     => $self->_get_config($opt_key, $index),
-                on_change   => sub { $self->_set_config($opt_key, $index, $_[0]) },
+                opt_key => $full_key,
+                config => 1,
+                (map { $_ => $config_opt->{$_} } qw(type label tooltip sidetext width height full_width min max labels values multiline readonly)),
+                default => $self->_get_config($opt_key, $index),
+                on_change => sub { $self->_set_config($opt_key, $index, $_[0]) },
             };
         }
         $opt;
@@ -310,7 +309,7 @@ sub set_value {
     my $self = shift;
     my ($opt_key, $value) = @_;
     
-    my $opt = $self->_option($opt_key) or return 0; 
+    my $opt = $self->_option($opt_key) or return 0;
     
     # if user is setting a non-config option, forward the call to the parent
     if (!$opt->{config}) {

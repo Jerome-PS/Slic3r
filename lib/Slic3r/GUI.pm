@@ -246,6 +246,7 @@ sub save_settings {
 package Slic3r::GUI::ProgressStatusBar;
 use Wx qw(:gauge :misc);
 use base 'Wx::StatusBar';
+use Locale::gettext;
 
 sub new {
     my $class = shift;
