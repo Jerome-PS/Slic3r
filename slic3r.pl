@@ -22,9 +22,12 @@ use Locale::Messages qw (LC_MESSAGES LC_ALL);
 use POSIX ('setlocale');
 
 # Set the locale according to our environment.
-setlocale (LC_ALL, '');
+$ENV{LC_MESSAGES} = 'fr_FR.UTF-8';						#!!!
+setlocale (LC_MESSAGES, '');
+print "setlocale=".	setlocale (LC_MESSAGES)."\n";		#!!!
+print $ENV{LC_MESSAGES}."\n";							#!!!
 
-print __"More";
+print __"More";											#!!!
 
 our %opt = ();
 my %cli_options = ();
