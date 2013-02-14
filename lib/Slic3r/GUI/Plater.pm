@@ -333,8 +333,7 @@ sub load_file {
     }
     
     $process_dialog->Destroy;
-#jh    $self->statusbar->SetStatusText(__("Loaded $input_file"));
-    $self->statusbar->SetStatusText("Loaded $input_file");
+    $self->statusbar->SetStatusText(__x("Loaded {input_file}", input_file => $input_file));
 }
 
 sub object_loaded {
@@ -644,8 +643,7 @@ sub on_export_completed {
     $self->{export_thread} = undef;
     $self->statusbar->SetCancelCallback(undef);
     $self->statusbar->StopBusy;
-#jh    $self->statusbar->SetStatusText(__("G-code file exported to $self->{output_file}"));
-    $self->statusbar->SetStatusText("G-code file exported to $self->{output_file}");
+    $self->statusbar->SetStatusText(__x("G-code file exported to {output_file}", output_file => $self->{output_file}));
     &Wx::wxTheApp->notify($message);
 }
 
@@ -664,8 +662,7 @@ sub export_stl {
         
     my $output_file = $self->_get_export_file('STL') or return;
     Slic3r::Format::STL->write_file($output_file, $self->make_model, binary => 1);
-#jh    $self->statusbar->SetStatusText(__("STL file exported to $output_file"));
-    $self->statusbar->SetStatusText("STL file exported to $output_file");
+    $self->statusbar->SetStatusText(__x("STL file exported to {output_file}", output_file => $output_file));
 }
 
 sub export_amf {
@@ -673,8 +670,7 @@ sub export_amf {
         
     my $output_file = $self->_get_export_file('AMF') or return;
     Slic3r::Format::AMF->write_file($output_file, $self->make_model);
-#jh    $self->statusbar->SetStatusText(__("AMF file exported to $output_file"));
-    $self->statusbar->SetStatusText("AMF file exported to $output_file");
+    $self->statusbar->SetStatusText(__x("AMF file exported to {output_file}", output_file => $output_file));
 }
 
 sub _get_export_file {
@@ -687,8 +683,7 @@ sub _get_export_file {
     {
         $output_file = $self->_init_print->expanded_output_filepath($output_file, $self->{objects}[0]->input_file);
         $output_file =~ s/\.gcode$/$suffix/i;
-#jh        my $dlg = Wx::FileDialog->new($self, __("Save $format file as:"), dirname($output_file),
-        my $dlg = Wx::FileDialog->new($self, "Save $format file as:", dirname($output_file),
+        my $dlg = Wx::FileDialog->new($self, __x("Save {frmat} file as:", frmat => $format), dirname($output_file),
             basename($output_file), &Slic3r::GUI::SkeinPanel::MODEL_WILDCARD, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
         if ($dlg->ShowModal != wxID_OK) {
             $dlg->Destroy;

@@ -14,8 +14,7 @@ use Slic3r::GUI::Tab;
 use Wx 0.9901 qw(:bitmap :dialog :frame :icon :id :misc :systemsettings :toplevelwindow);
 use Wx::Event qw(EVT_CLOSE EVT_MENU);
 use base 'Wx::App';
-#use Locale::gettext;
-use Locale::Messages qw(:locale_h :libintl_h);
+use Locale::TextDomain ('slic3r', '.');
 
 use constant MI_LOAD_CONF     => &Wx::NewId;
 use constant MI_EXPORT_CONF   => &Wx::NewId;
@@ -50,7 +49,7 @@ sub OnInit {
     my $self = shift;
     
     $self->SetAppName('Slic3r');
-    Slic3r::debugf gettext("wxWidgets version %s, Wx version %s\n"), &Wx::wxVERSION_STRING, $Wx::VERSION;
+    Slic3r::debugf __("wxWidgets version %s, Wx version %s\n"), &Wx::wxVERSION_STRING, $Wx::VERSION;
     
     $self->{notifier} = Slic3r::GUI::Notifier->new;
     
@@ -59,8 +58,7 @@ sub OnInit {
     Slic3r::debugf "Data directory: %s\n", $datadir;
     my $run_wizard = (-d $datadir) ? 0 : 1;
     for ($datadir, "$datadir/print", "$datadir/filament", "$datadir/printer") {
-#jh        mkdir or $self->fatal_error(gettext("Slic3r was unable to create its data directory at $_ (errno: $!)."))
-        mkdir or $self->fatal_error("Slic3r was unable to create its data directory at $_ (errno: $!).")
+        mkdir or $self->fatal_error(__x("Slic3r was unable to create its data directory at {at} (errno: {errno}).", at => $_, errno => $!))
             unless -d $_;
     }
     
@@ -79,26 +77,25 @@ sub OnInit {
     
     # status bar
     $frame->{statusbar} = Slic3r::GUI::ProgressStatusBar->new($frame, -1);
-#jh    $frame->{statusbar}->SetStatusText(gettext("Version $Slic3r::VERSION - Remember to check for updates at http://slic3r.org/"));
-    $frame->{statusbar}->SetStatusText("Version $Slic3r::VERSION - Remember to check for updates at http://slic3r.org/");
+    $frame->{statusbar}->SetStatusText(__x("Version {version} - Remember to check for updates at http://slic3r.org/", version => $Slic3r::VERSION));
     $frame->SetStatusBar($frame->{statusbar});
     
     # File menu
     my $fileMenu = Wx::Menu->new;
     {
-        $fileMenu->Append(MI_LOAD_CONF, gettext("&Load Config…\tCtrl+L"), gettext('Load exported configuration file'));
-        $fileMenu->Append(MI_EXPORT_CONF, gettext("&Export Config…\tCtrl+E"), gettext('Export current configuration to file'));
+        $fileMenu->Append(MI_LOAD_CONF, __("&Load Config…\tCtrl+L"), __('Load exported configuration file'));
+        $fileMenu->Append(MI_EXPORT_CONF, __("&Export Config…\tCtrl+E"), __('Export current configuration to file'));
         $fileMenu->AppendSeparator();
-        $fileMenu->Append(MI_QUICK_SLICE, gettext("Q&uick Slice…\tCtrl+U"), gettext('Slice file'));
-        $fileMenu->Append(MI_QUICK_SAVE_AS, gettext("Quick Slice and Save &As…\tCtrl+Alt+U"), gettext('Slice file and save as'));
-        my $repeat = $fileMenu->Append(MI_REPEAT_QUICK, gettext("&Repeat Last Quick Slice\tCtrl+Shift+U"), gettext('Repeat last quick slice'));
+        $fileMenu->Append(MI_QUICK_SLICE, __("Q&uick Slice…\tCtrl+U"), __('Slice file'));
+        $fileMenu->Append(MI_QUICK_SAVE_AS, __("Quick Slice and Save &As…\tCtrl+Alt+U"), __('Slice file and save as'));
+        my $repeat = $fileMenu->Append(MI_REPEAT_QUICK, __("&Repeat Last Quick Slice\tCtrl+Shift+U"), __('Repeat last quick slice'));
         $repeat->Enable(0);
         $fileMenu->AppendSeparator();
-        $fileMenu->Append(MI_SLICE_SVG, gettext("Slice to SV&G…\tCtrl+G"), gettext('Slice file to SVG'));
+        $fileMenu->Append(MI_SLICE_SVG, __("Slice to SV&G…\tCtrl+G"), __('Slice file to SVG'));
         $fileMenu->AppendSeparator();
-        $fileMenu->Append(MI_COMBINE_STLS, gettext("Combine multi-material STL files…"), gettext('Combine multiple STL files into a single multi-material AMF file'));
+        $fileMenu->Append(MI_COMBINE_STLS, __("Combine multi-material STL files…"), __('Combine multiple STL files into a single multi-material AMF file'));
         $fileMenu->AppendSeparator();
-        $fileMenu->Append(wxID_EXIT, gettext("&Quit"), gettext('Quit Slic3r'));
+        $fileMenu->Append(wxID_EXIT, __("&Quit"), __('Quit Slic3r'));
         EVT_MENU($frame, MI_LOAD_CONF, sub { $self->{skeinpanel}->load_config_file });
         EVT_MENU($frame, MI_EXPORT_CONF, sub { $self->{skeinpanel}->export_config });
         EVT_MENU($frame, MI_QUICK_SLICE, sub { $self->{skeinpanel}->do_slice;
@@ -114,9 +111,9 @@ sub OnInit {
     # Plater menu
     my $platerMenu = Wx::Menu->new;
     {
-        $platerMenu->Append(MI_PLATER_EXPORT_GCODE, gettext("Export G-code..."), gettext('Export current plate as G-code'));
-        $platerMenu->Append(MI_PLATER_EXPORT_STL, gettext("Export STL..."), gettext('Export current plate as STL'));
-        $platerMenu->Append(MI_PLATER_EXPORT_AMF, gettext("Export AMF..."), gettext('Export current plate as AMF'));
+        $platerMenu->Append(MI_PLATER_EXPORT_GCODE, __("Export G-code..."), __('Export current plate as G-code'));
+        $platerMenu->Append(MI_PLATER_EXPORT_STL, __("Export STL..."), __('Export current plate as STL'));
+        $platerMenu->Append(MI_PLATER_EXPORT_AMF, __("Export AMF..."), __('Export current plate as AMF'));
         EVT_MENU($frame, MI_PLATER_EXPORT_GCODE, sub { $self->{skeinpanel}{plater}->export_gcode });
         EVT_MENU($frame, MI_PLATER_EXPORT_STL, sub { $self->{skeinpanel}{plater}->export_stl });
         EVT_MENU($frame, MI_PLATER_EXPORT_AMF, sub { $self->{skeinpanel}{plater}->export_amf });
@@ -125,10 +122,10 @@ sub OnInit {
     # Window menu
     my $windowMenu = Wx::Menu->new;
     {
-        $windowMenu->Append(MI_TAB_PLATER, gettext("Select &Plater Tab\tCtrl+1"), gettext('Show the plater'));
-        $windowMenu->Append(MI_TAB_PRINT, gettext("Select P&rint Settings Tab\tCtrl+2"), gettext('Show the print settings'));
-        $windowMenu->Append(MI_TAB_FILAMENT, gettext("Select &Filament Settings Tab\tCtrl+3"), gettext('Show the filament settings'));
-        $windowMenu->Append(MI_TAB_PRINTER, gettext("Select Print&er Settings Tab\tCtrl+4"), gettext('Show the printer settings'));
+        $windowMenu->Append(MI_TAB_PLATER, __("Select &Plater Tab\tCtrl+1"), __('Show the plater'));
+        $windowMenu->Append(MI_TAB_PRINT, __("Select P&rint Settings Tab\tCtrl+2"), __('Show the print settings'));
+        $windowMenu->Append(MI_TAB_FILAMENT, __("Select &Filament Settings Tab\tCtrl+3"), __('Show the filament settings'));
+        $windowMenu->Append(MI_TAB_PRINTER, __("Select Print&er Settings Tab\tCtrl+4"), __('Show the printer settings'));
         EVT_MENU($frame, MI_TAB_PLATER, sub { $self->{skeinpanel}->select_tab(0) });
         EVT_MENU($frame, MI_TAB_PRINT, sub { $self->{skeinpanel}->select_tab(1) });
         EVT_MENU($frame, MI_TAB_FILAMENT, sub { $self->{skeinpanel}->select_tab(2) });
@@ -138,13 +135,12 @@ sub OnInit {
     # Help menu
     my $helpMenu = Wx::Menu->new;
     {
-#jh        $helpMenu->Append(MI_CONF_WIZARD, gettext("&Configuration $Slic3r::GUI::ConfigWizard::wizard…"), gettext("Run Configuration $Slic3r::GUI::ConfigWizard::wizard"));
-        $helpMenu->Append(MI_CONF_WIZARD, "&Configuration $Slic3r::GUI::ConfigWizard::wizard…", "Run Configuration $Slic3r::GUI::ConfigWizard::wizard");
+        $helpMenu->Append(MI_CONF_WIZARD, __x("&Configuration {wizard}…", wizard => $Slic3r::GUI::ConfigWizard::wizard), __x("Run Configuration {wizard}", wizard => $Slic3r::GUI::ConfigWizard::wizard));
         $helpMenu->AppendSeparator();
-        $helpMenu->Append(MI_WEBSITE, gettext("Slic3r &Website"), gettext('Open the Slic3r website in your browser'));
-        $helpMenu->Append(MI_DOCUMENTATION, gettext("&Documentation"), gettext('Open the Slic3r documentation in your browser'));
+        $helpMenu->Append(MI_WEBSITE, __("Slic3r &Website"), __('Open the Slic3r website in your browser'));
+        $helpMenu->Append(MI_DOCUMENTATION, __("&Documentation"), __('Open the Slic3r documentation in your browser'));
         $helpMenu->AppendSeparator();
-        $helpMenu->Append(wxID_ABOUT, gettext("&About Slic3r"), gettext('Show about dialog'));
+        $helpMenu->Append(wxID_ABOUT, __("&About Slic3r"), __('Show about dialog'));
         EVT_MENU($frame, MI_CONF_WIZARD, sub { $self->{skeinpanel}->config_wizard });
         EVT_MENU($frame, MI_WEBSITE, sub { Wx::LaunchDefaultBrowser('http://slic3r.org/') });
         EVT_MENU($frame, MI_DOCUMENTATION, sub { Wx::LaunchDefaultBrowser('https://github.com/alexrj/Slic3r/wiki/Documentation') });
@@ -156,10 +152,10 @@ sub OnInit {
     # will not be handled correctly
     {
         my $menubar = Wx::MenuBar->new;
-        $menubar->Append($fileMenu, gettext("&File"));
-        $menubar->Append($platerMenu, gettext("&Plater"));
-        $menubar->Append($windowMenu, gettext("&Window"));
-        $menubar->Append($helpMenu, gettext("&Help"));
+        $menubar->Append($fileMenu, __("&File"));
+        $menubar->Append($platerMenu, __("&Plater"));
+        $menubar->Append($windowMenu, __("&Window"));
+        $menubar->Append($helpMenu, __("&Help"));
         $frame->SetMenuBar($menubar);
     }
     
@@ -194,7 +190,7 @@ sub catch_error {
     my ($self, $cb, $message_dialog) = @_;
     if (my $err = $@) {
         $cb->() if $cb;
-        my @params = ($err, gettext('Error'), wxOK | wxICON_ERROR);
+        my @params = ($err, __('Error'), wxOK | wxICON_ERROR);
         $message_dialog
             ? $message_dialog->(@params)
             : Wx::MessageDialog->new($self, @params)->ShowModal;
@@ -206,7 +202,7 @@ sub catch_error {
 sub show_error {
     my $self = shift;
     my ($message) = @_;
-    Wx::MessageDialog->new($self, $message, gettext('Error'), wxOK | wxICON_ERROR)->ShowModal;
+    Wx::MessageDialog->new($self, $message, __('Error'), wxOK | wxICON_ERROR)->ShowModal;
 }
 
 sub fatal_error {
@@ -219,7 +215,7 @@ sub warning_catcher {
     my ($self, $message_dialog) = @_;
     return sub {
         my $message = shift;
-        my @params = ($message, gettext('Warning'), wxOK | wxICON_WARNING);
+        my @params = ($message, __('Warning'), wxOK | wxICON_WARNING);
         $message_dialog
             ? $message_dialog->(@params)
             : Wx::MessageDialog->new($self, @params)->ShowModal;
@@ -247,8 +243,7 @@ sub save_settings {
 package Slic3r::GUI::ProgressStatusBar;
 use Wx qw(:gauge :misc);
 use base 'Wx::StatusBar';
-#use Locale::gettext;
-use Locale::Messages qw(:locale_h :libintl_h);
+use Locale::TextDomain ('slic3r', '.');
 
 sub new {
     my $class = shift;
@@ -258,7 +253,7 @@ sub new {
     $self->{timer} = Wx::Timer->new($self);
     $self->{prog} = Wx::Gauge->new($self, wxGA_HORIZONTAL, 100, wxDefaultPosition, wxDefaultSize);
     $self->{prog}->Hide;
-    $self->{cancelbutton} = Wx::Button->new($self, -1, gettext("Cancel"), wxDefaultPosition, wxDefaultSize);
+    $self->{cancelbutton} = Wx::Button->new($self, -1, __("Cancel"), wxDefaultPosition, wxDefaultSize);
     $self->{cancelbutton}->Hide;
     
     $self->SetFieldsCount(3);
@@ -396,7 +391,7 @@ sub new {
         # register with growl
         eval {
             $self->{growler} = Growl::GNTP->new(AppName => 'Slic3r', AppIcon => $self->{icon});
-            $self->{growler}->register([{Name => 'SKEIN_DONE', DisplayName => gettext('Slicing Done')}]);
+            $self->{growler}->register([{Name => 'SKEIN_DONE', DisplayName => __('Slicing Done')}]);
         };
     }
 
@@ -407,7 +402,7 @@ sub new {
 
 sub notify {
     my ($self, $message) = @_;
-    my $title = gettext('Slicing Done!');
+    my $title = __('Slicing Done!');
 
     eval {
         $self->{growler}->notify(Event => 'SKEIN_DONE', Title => $title, Message => $message)

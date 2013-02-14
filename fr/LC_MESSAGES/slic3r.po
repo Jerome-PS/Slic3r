@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: slic3r 0.9.8\n"
-"POT-Creation-Date: 2013-02-10 19:02+0100\n"
-"PO-Revision-Date: 2013-02-10 22:18+0100\n"
+"POT-Creation-Date: 2013-02-14 21:59+0100\n"
+"PO-Revision-Date: 2013-02-14 21:59+0100\n"
 "Last-Translator: Jérôme Hamm <jerome.hamm@planete-sciences.org>\n"
 "Language-Team: Planète Sciences <jerome.hamm@planete-sciences.org>\n"
 "Language: Français\n"
@@ -10,200 +10,221 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.5\n"
-"X-Poedit-KeywordsList: __;~~;_;gettext;gettext_noop\n"
+"X-Poedit-KeywordsList: __x;__;~~;_;gettext;gettext_noop\n"
 "X-Poedit-Basepath: ../..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: lib/Slic3r/GUI\n"
 
-#: blib/lib/Slic3r/GUI/Plater.pm:106 lib/Slic3r/GUI/Plater.pm:108
-msgid "Export STL…"
-msgstr "Export STL…"
+#: slic3r.pl:30 lib/Slic3r/GUI/Plater.pm:66 lib/Slic3r/GUI/Plater.pm:77
+msgid "More"
+msgstr "Plus"
 
 #: lib/Slic3r/GUI.pm:52
 #, perl-format
 msgid "wxWidgets version %s, Wx version %s\n"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:88
+#: lib/Slic3r/GUI.pm:61
+#, perl-brace-format
+msgid ""
+"Slic3r was unable to create its data directory at {at} (errno: {errno})."
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:80
+#, perl-brace-format
+msgid "Version {version} - Remember to check for updates at http://slic3r.org/"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:86
 msgid "&Load Config…\tCtrl+L"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:88
+#: lib/Slic3r/GUI.pm:86
 msgid "Load exported configuration file"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:89
+#: lib/Slic3r/GUI.pm:87
 msgid "&Export Config…\tCtrl+E"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:89
+#: lib/Slic3r/GUI.pm:87
 msgid "Export current configuration to file"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:91
+#: lib/Slic3r/GUI.pm:89
 msgid "Q&uick Slice…\tCtrl+U"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:91
+#: lib/Slic3r/GUI.pm:89
 msgid "Slice file"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:92
+#: lib/Slic3r/GUI.pm:90
 msgid "Quick Slice and Save &As…\tCtrl+Alt+U"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:92
+#: lib/Slic3r/GUI.pm:90
 msgid "Slice file and save as"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:93
+#: lib/Slic3r/GUI.pm:91
 msgid "&Repeat Last Quick Slice\tCtrl+Shift+U"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:93
+#: lib/Slic3r/GUI.pm:91
 msgid "Repeat last quick slice"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:96
+#: lib/Slic3r/GUI.pm:94
 msgid "Slice to SV&G…\tCtrl+G"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:96
+#: lib/Slic3r/GUI.pm:94
 msgid "Slice file to SVG"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:98
+#: lib/Slic3r/GUI.pm:96
 msgid "Combine multi-material STL files…"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:98
+#: lib/Slic3r/GUI.pm:96
 msgid "Combine multiple STL files into a single multi-material AMF file"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:100
+#: lib/Slic3r/GUI.pm:98
 msgid "&Quit"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:100
+#: lib/Slic3r/GUI.pm:98
 msgid "Quit Slic3r"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:116
+#: lib/Slic3r/GUI.pm:114
 msgid "Export G-code..."
 msgstr "Export G-code…"
 
-#: lib/Slic3r/GUI.pm:116
+#: lib/Slic3r/GUI.pm:114
 msgid "Export current plate as G-code"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:117
+#: lib/Slic3r/GUI.pm:115
 msgid "Export STL..."
 msgstr "Export STL…"
 
-#: lib/Slic3r/GUI.pm:117
+#: lib/Slic3r/GUI.pm:115
 msgid "Export current plate as STL"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:118
+#: lib/Slic3r/GUI.pm:116
 msgid "Export AMF..."
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:118
+#: lib/Slic3r/GUI.pm:116
 msgid "Export current plate as AMF"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:127
+#: lib/Slic3r/GUI.pm:125
 msgid "Select &Plater Tab\tCtrl+1"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:127
+#: lib/Slic3r/GUI.pm:125
 msgid "Show the plater"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:128
+#: lib/Slic3r/GUI.pm:126
 msgid "Select P&rint Settings Tab\tCtrl+2"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:128
+#: lib/Slic3r/GUI.pm:126
 #, fuzzy
 msgid "Show the print settings"
 msgstr "Param. d'impression"
 
-#: lib/Slic3r/GUI.pm:129
+#: lib/Slic3r/GUI.pm:127
 #, fuzzy
 msgid "Select &Filament Settings Tab\tCtrl+3"
 msgstr "Param. d'impression"
 
-#: lib/Slic3r/GUI.pm:129
+#: lib/Slic3r/GUI.pm:127
 #, fuzzy
 msgid "Show the filament settings"
 msgstr "Param. d'impression"
 
-#: lib/Slic3r/GUI.pm:130
+#: lib/Slic3r/GUI.pm:128
 #, fuzzy
 msgid "Select Print&er Settings Tab\tCtrl+4"
 msgstr "Param. d'impression"
 
-#: lib/Slic3r/GUI.pm:130
+#: lib/Slic3r/GUI.pm:128
 #, fuzzy
 msgid "Show the printer settings"
 msgstr "Param. d'impression"
 
-#: lib/Slic3r/GUI.pm:143
+#: lib/Slic3r/GUI.pm:138
+#, perl-brace-format
+msgid "&Configuration {wizard}…"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:138
+#, perl-brace-format
+msgid "Run Configuration {wizard}"
+msgstr ""
+
+#: lib/Slic3r/GUI.pm:140
 msgid "Slic3r &Website"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:143
+#: lib/Slic3r/GUI.pm:140
 msgid "Open the Slic3r website in your browser"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:144
+#: lib/Slic3r/GUI.pm:141
 msgid "&Documentation"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:144
+#: lib/Slic3r/GUI.pm:141
 msgid "Open the Slic3r documentation in your browser"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:146
+#: lib/Slic3r/GUI.pm:143
 msgid "&About Slic3r"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:146
+#: lib/Slic3r/GUI.pm:143
 msgid "Show about dialog"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:158
+#: lib/Slic3r/GUI.pm:155
 msgid "&File"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:159
+#: lib/Slic3r/GUI.pm:156
 msgid "&Plater"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:160
+#: lib/Slic3r/GUI.pm:157
 msgid "&Window"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:161
+#: lib/Slic3r/GUI.pm:158
 msgid "&Help"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:196 lib/Slic3r/GUI.pm:208 lib/Slic3r/GUI/Plater.pm:524
-#: lib/Slic3r/GUI/SkeinPanel.pm:91
+#: lib/Slic3r/GUI.pm:193 lib/Slic3r/GUI.pm:205 lib/Slic3r/GUI/Plater.pm:523
+#: lib/Slic3r/GUI/SkeinPanel.pm:90
 msgid "Error"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:221
+#: lib/Slic3r/GUI.pm:218
 msgid "Warning"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:396
+#: lib/Slic3r/GUI.pm:394
 msgid "Slicing Done"
 msgstr ""
 
-#: lib/Slic3r/GUI.pm:407 lib/Slic3r/GUI/SkeinPanel.pm:166
+#: lib/Slic3r/GUI.pm:405 lib/Slic3r/GUI/SkeinPanel.pm:162
 msgid "Slicing Done!"
 msgstr ""
 
@@ -215,105 +236,121 @@ msgstr ""
 msgid "Slic3r"
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:264
+#: lib/Slic3r/GUI/AboutDialog.pm:41
+#, perl-brace-format
+msgid "Version {version}"
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:17
+#, perl-brace-format
+msgid "Configuration {wizard}"
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:262
+#, perl-brace-format
+msgid "Welcome to the Slic3r Configuration {wizard}"
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:262
 msgid "Welcome"
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:266
+#: lib/Slic3r/GUI/ConfigWizard.pm:264
 msgid "Hello, welcome to Slic3r! This "
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:267
+#: lib/Slic3r/GUI/ConfigWizard.pm:265
 msgid "To import an existing configuration instead, cancel this "
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:268
+#: lib/Slic3r/GUI/ConfigWizard.pm:266
 msgid "To continue, click Next."
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:280
+#: lib/Slic3r/GUI/ConfigWizard.pm:278
 msgid "Firmware Type"
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:282
+#: lib/Slic3r/GUI/ConfigWizard.pm:280
 msgid "Choose the type of firmware used by your printer, then click Next."
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:295
+#: lib/Slic3r/GUI/ConfigWizard.pm:293
 msgid "Bed Size"
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:297
+#: lib/Slic3r/GUI/ConfigWizard.pm:295
 msgid "Enter the size of your printers bed, then click Next."
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:310
+#: lib/Slic3r/GUI/ConfigWizard.pm:308
 msgid "Nozzle Diameter"
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:312
+#: lib/Slic3r/GUI/ConfigWizard.pm:310
 msgid "Enter the diameter of your printers hot end nozzle, then click Next."
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:325
+#: lib/Slic3r/GUI/ConfigWizard.pm:323
 msgid "Filament Diameter"
 msgstr "Diamètre du Fil"
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:327
+#: lib/Slic3r/GUI/ConfigWizard.pm:325
 msgid "Enter the diameter of your filament, then click Next."
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:328
+#: lib/Slic3r/GUI/ConfigWizard.pm:326
 msgid ""
 "Good precision is required, so use a caliper and do multiple measurements "
 "along the filament, then compute the average."
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:341
+#: lib/Slic3r/GUI/ConfigWizard.pm:339
 msgid "Extrusion Temperature"
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:343
+#: lib/Slic3r/GUI/ConfigWizard.pm:341
 msgid ""
 "Enter the temperature needed for extruding your filament, then click Next."
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:344
+#: lib/Slic3r/GUI/ConfigWizard.pm:342
 msgid "A rule of thumb is 160 to 230 °C for PLA, and 215 to 250 °C for ABS."
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:357
+#: lib/Slic3r/GUI/ConfigWizard.pm:355
 msgid "Bed Temperature"
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:359
+#: lib/Slic3r/GUI/ConfigWizard.pm:357
 msgid ""
 "Enter the bed temperature needed for getting your filament to stick to your "
 "heated bed, then click Next."
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:360
+#: lib/Slic3r/GUI/ConfigWizard.pm:358
 msgid "A rule of thumb is 60 °C for PLA and 110 °C for ABS."
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:373
+#: lib/Slic3r/GUI/ConfigWizard.pm:371
 msgid "Congratulations!"
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:373
+#: lib/Slic3r/GUI/ConfigWizard.pm:371
 msgid "Finish"
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:377
+#: lib/Slic3r/GUI/ConfigWizard.pm:373
+#, perl-brace-format
+msgid "You have successfully completed the Slic3r Configuration {wizard}. "
+msgstr ""
+
+#: lib/Slic3r/GUI/ConfigWizard.pm:374
 msgid "Slic3r is now configured for your printer and filament."
 msgstr ""
 
-#: lib/Slic3r/GUI/ConfigWizard.pm:378
+#: lib/Slic3r/GUI/ConfigWizard.pm:375
 msgid "To close this "
-msgstr ""
-
-#: lib/Slic3r/GUI/OptionsGroup.pm:210
-msgid "Unsupported option type: "
 msgstr ""
 
 #: lib/Slic3r/GUI/Plater.pm:34
@@ -323,10 +360,6 @@ msgstr "Que voulez-vous imprimer aujourd'hui? ™"
 #: lib/Slic3r/GUI/Plater.pm:35
 msgid "Drag your objects here"
 msgstr "Glissez-déposez vos objets ici"
-
-#: lib/Slic3r/GUI/Plater.pm:66 lib/Slic3r/GUI/Plater.pm:77
-msgid "More"
-msgstr "Plus"
 
 #: lib/Slic3r/GUI/Plater.pm:67
 msgid "Fewer"
@@ -368,7 +401,7 @@ msgstr "Nom"
 msgid "Copies"
 msgstr "Copies"
 
-#: lib/Slic3r/GUI/Plater.pm:89 lib/Slic3r/GUI/Plater.pm:441
+#: lib/Slic3r/GUI/Plater.pm:89 lib/Slic3r/GUI/Plater.pm:440
 msgid "Scale"
 msgstr "Echelle"
 
@@ -392,12 +425,16 @@ msgstr "Place. auto."
 msgid "Export G-code…"
 msgstr "Export G-code…"
 
+#: lib/Slic3r/GUI/Plater.pm:108
+msgid "Export STL…"
+msgstr "Export STL…"
+
 #: lib/Slic3r/GUI/Plater.pm:218
 msgid "Print settings"
 msgstr "Param. d'impression"
 
-#: lib/Slic3r/GUI/Plater.pm:219 lib/Slic3r/GUI/Tab.pm:536
-#: lib/Slic3r/GUI/Tab.pm:538
+#: lib/Slic3r/GUI/Plater.pm:219 lib/Slic3r/GUI/Tab.pm:540
+#: lib/Slic3r/GUI/Tab.pm:542
 msgid "Filament"
 msgstr "Filament"
 
@@ -417,67 +454,92 @@ msgstr ""
 msgid "Processing input file…"
 msgstr ""
 
-#: lib/Slic3r/GUI/Plater.pm:426
+#: lib/Slic3r/GUI/Plater.pm:336
+#, perl-brace-format
+msgid "Loaded {input_file}"
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:425
 msgid "Enter the rotation angle:"
 msgstr ""
 
-#: lib/Slic3r/GUI/Plater.pm:426
+#: lib/Slic3r/GUI/Plater.pm:425
 msgid "Rotate"
 msgstr "Pivoter"
 
-#: lib/Slic3r/GUI/Plater.pm:441
+#: lib/Slic3r/GUI/Plater.pm:440
 #, perl-format
 msgid "Enter the scale % for the selected object:"
 msgstr ""
 
-#: lib/Slic3r/GUI/Plater.pm:480
+#: lib/Slic3r/GUI/Plater.pm:479
 msgid ""
 "The selected object couldn't be splitted because it contains more than one "
 "volume/material."
 msgstr ""
 
-#: lib/Slic3r/GUI/Plater.pm:489
+#: lib/Slic3r/GUI/Plater.pm:488
 msgid ""
 "The selected object couldn't be splitted because it already contains a "
 "single part."
 msgstr ""
 
-#: lib/Slic3r/GUI/Plater.pm:524
+#: lib/Slic3r/GUI/Plater.pm:523
 msgid "Another slicing job is currently running."
 msgstr ""
 
-#: lib/Slic3r/GUI/Plater.pm:535
+#: lib/Slic3r/GUI/Plater.pm:534
 msgid "Save G-code file as:"
 msgstr ""
 
-#: lib/Slic3r/GUI/Plater.pm:566
+#: lib/Slic3r/GUI/Plater.pm:565
 msgid "Export cancelled"
 msgstr ""
 
-#: lib/Slic3r/GUI/Plater.pm:600
+#: lib/Slic3r/GUI/Plater.pm:599
 msgid "Exporting cancelled; exiting thread...\n"
 msgstr ""
 
-#: lib/Slic3r/GUI/Plater.pm:626
+#: lib/Slic3r/GUI/Plater.pm:625
 msgid "Your files were successfully sliced"
 msgstr ""
 
-#: lib/Slic3r/GUI/Plater.pm:628 lib/Slic3r/GUI/SkeinPanel.pm:159
+#: lib/Slic3r/GUI/Plater.pm:627 lib/Slic3r/GUI/SkeinPanel.pm:155
 msgid " in"
 msgstr ""
 
-#: lib/Slic3r/GUI/Plater.pm:630 lib/Slic3r/GUI/SkeinPanel.pm:161
+#: lib/Slic3r/GUI/Plater.pm:629 lib/Slic3r/GUI/SkeinPanel.pm:157
 #, perl-format
 msgid " %d minutes and"
 msgstr ""
 
-#: lib/Slic3r/GUI/Plater.pm:631 lib/Slic3r/GUI/SkeinPanel.pm:162
+#: lib/Slic3r/GUI/Plater.pm:630 lib/Slic3r/GUI/SkeinPanel.pm:158
 #, perl-format
 msgid " %.1f seconds"
 msgstr ""
 
-#: lib/Slic3r/GUI/Plater.pm:659
+#: lib/Slic3r/GUI/Plater.pm:646
+#, perl-brace-format
+msgid "G-code file exported to {output_file}"
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:657
 msgid "Export failed"
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:665
+#, perl-brace-format
+msgid "STL file exported to {output_file}"
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:673
+#, perl-brace-format
+msgid "AMF file exported to {output_file}"
+msgstr ""
+
+#: lib/Slic3r/GUI/Plater.pm:686
+#, perl-brace-format
+msgid "Save {frmat} file as:"
 msgstr ""
 
 #: lib/Slic3r/GUI/SkeinPanel.pm:18
@@ -508,51 +570,77 @@ msgstr ""
 msgid "Plater"
 msgstr ""
 
-#: lib/Slic3r/GUI/SkeinPanel.pm:71
+#: lib/Slic3r/GUI/SkeinPanel.pm:69
+#, perl-brace-format
+msgid "Are you sure you want to slice {copies} copies?"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:70
 msgid "Multiple Copies"
 msgstr ""
 
-#: lib/Slic3r/GUI/SkeinPanel.pm:80
+#: lib/Slic3r/GUI/SkeinPanel.pm:79
 msgid "Choose a file to slice (STL/OBJ/AMF):"
 msgstr ""
 
-#: lib/Slic3r/GUI/SkeinPanel.pm:90
+#: lib/Slic3r/GUI/SkeinPanel.pm:89
 msgid "No previously sliced file."
 msgstr ""
 
-#: lib/Slic3r/GUI/SkeinPanel.pm:97
+#: lib/Slic3r/GUI/SkeinPanel.pm:94
+#, perl-brace-format
+msgid "Previously sliced file ({last_input_file}) not found."
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:95
 msgid "File Not Found"
 msgstr ""
 
-#: lib/Slic3r/GUI/SkeinPanel.pm:117 lib/Slic3r/GUI/Tab.pm:852
+#: lib/Slic3r/GUI/SkeinPanel.pm:115 lib/Slic3r/GUI/Tab.pm:858
 msgid "Save "
 msgstr ""
 
-#: lib/Slic3r/GUI/SkeinPanel.pm:130
+#: lib/Slic3r/GUI/SkeinPanel.pm:127
 msgid "Slicing…"
 msgstr ""
 
-#: lib/Slic3r/GUI/SkeinPanel.pm:184
+#: lib/Slic3r/GUI/SkeinPanel.pm:127
+#, perl-brace-format
+msgid "Processing {input_file_basename}…"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:153
+#, perl-brace-format
+msgid "{input_file_basename} was successfully sliced"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:180
 msgid "Save configuration as:"
 msgstr ""
 
-#: lib/Slic3r/GUI/SkeinPanel.pm:203
+#: lib/Slic3r/GUI/SkeinPanel.pm:199
 msgid "Select configuration to load:"
 msgstr ""
 
-#: lib/Slic3r/GUI/SkeinPanel.pm:241
+#: lib/Slic3r/GUI/SkeinPanel.pm:237
 msgid "Choose one or more files to combine (STL/OBJ)"
 msgstr ""
 
-#: lib/Slic3r/GUI/SkeinPanel.pm:251
+#: lib/Slic3r/GUI/SkeinPanel.pm:247
 msgid " or hit Cancel if you have finished"
 msgstr ""
 
-#: lib/Slic3r/GUI/SkeinPanel.pm:261
+#: lib/Slic3r/GUI/SkeinPanel.pm:257
 msgid "Save multi-material AMF file as:"
 msgstr ""
 
-#: lib/Slic3r/GUI/SkeinPanel.pm:343
+#: lib/Slic3r/GUI/SkeinPanel.pm:337
+#, perl-brace-format
+msgid ""
+"You have unsaved changes ({titles}). Discard changes and continue anyway?"
+msgstr ""
+
+#: lib/Slic3r/GUI/SkeinPanel.pm:338
 msgid "Unsaved Presets"
 msgstr ""
 
@@ -573,171 +661,195 @@ msgstr ""
 msgid "Delete Preset"
 msgstr "Effacer"
 
-#: lib/Slic3r/GUI/Tab.pm:178
+#: lib/Slic3r/GUI/Tab.pm:177
 msgid "Default preset"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:181
+#: lib/Slic3r/GUI/Tab.pm:177
+#, perl-brace-format
+msgid "Preset \"{name}\""
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:178
+#, perl-brace-format
+msgid "{name} has unsaved changes. Discard changes and continue anyway?"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:179
 msgid "Unsaved Changes"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:388
+#: lib/Slic3r/GUI/Tab.pm:216
+#, perl-brace-format
+msgid "The selected preset does not exist anymore ({file})."
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:332
+#, perl-brace-format
+msgid "Failed to read directory {datadir}/"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:385
 #, fuzzy
 msgid "Print Settings"
 msgstr "Param. d'impression"
 
-#: lib/Slic3r/GUI/Tab.pm:393
+#: lib/Slic3r/GUI/Tab.pm:390
 msgid "Layers and perimeters"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:395
+#: lib/Slic3r/GUI/Tab.pm:392
 msgid "Layer height"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:399
+#: lib/Slic3r/GUI/Tab.pm:396
 msgid "Vertical shells"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:403
+#: lib/Slic3r/GUI/Tab.pm:400
 msgid "Horizontal shells"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:407
+#: lib/Slic3r/GUI/Tab.pm:404
 msgid "Solid layers"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:413 lib/Slic3r/GUI/Tab.pm:424
-#: lib/Slic3r/GUI/Tab.pm:508 lib/Slic3r/GUI/Tab.pm:655
+#: lib/Slic3r/GUI/Tab.pm:410 lib/Slic3r/GUI/Tab.pm:421
+#: lib/Slic3r/GUI/Tab.pm:511 lib/Slic3r/GUI/Tab.pm:660
 msgid "Advanced"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:418 lib/Slic3r/GUI/Tab.pm:420
+#: lib/Slic3r/GUI/Tab.pm:415 lib/Slic3r/GUI/Tab.pm:417
 msgid "Infill"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:429
+#: lib/Slic3r/GUI/Tab.pm:427
 msgid "Speed"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:431
+#: lib/Slic3r/GUI/Tab.pm:429
 msgid "Speed for print moves"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:435
+#: lib/Slic3r/GUI/Tab.pm:433
 msgid "Speed for non-print moves"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:439
+#: lib/Slic3r/GUI/Tab.pm:437
 msgid "Modifiers"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:443
+#: lib/Slic3r/GUI/Tab.pm:441
 msgid "Acceleration control (advanced)"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:448
+#: lib/Slic3r/GUI/Tab.pm:446
 msgid "Skirt and brim"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:450
+#: lib/Slic3r/GUI/Tab.pm:448
 msgid "Skirt"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:454
+#: lib/Slic3r/GUI/Tab.pm:452
 msgid "Brim"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:459 lib/Slic3r/GUI/Tab.pm:461
+#: lib/Slic3r/GUI/Tab.pm:457
 msgid "Support material"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:465
+#: lib/Slic3r/GUI/Tab.pm:463
 msgid "Raft"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:470 lib/Slic3r/GUI/Tab.pm:472
+#: lib/Slic3r/GUI/Tab.pm:467
+msgid "Options for support material and raft"
+msgstr ""
+
+#: lib/Slic3r/GUI/Tab.pm:473 lib/Slic3r/GUI/Tab.pm:475
 msgid "Notes"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:478
+#: lib/Slic3r/GUI/Tab.pm:481
 msgid "Output options"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:480
+#: lib/Slic3r/GUI/Tab.pm:483
 msgid "Sequential printing"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:485
+#: lib/Slic3r/GUI/Tab.pm:488
 msgid "Extruder clearance (mm)"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:491
+#: lib/Slic3r/GUI/Tab.pm:494
 msgid "Output file"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:495
+#: lib/Slic3r/GUI/Tab.pm:498
 msgid "Post-processing scripts"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:501
+#: lib/Slic3r/GUI/Tab.pm:504
 msgid "Multiple Extruders"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:503 lib/Slic3r/GUI/Tab.pm:645
+#: lib/Slic3r/GUI/Tab.pm:506 lib/Slic3r/GUI/Tab.pm:650
 msgid "Extruders"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:510
+#: lib/Slic3r/GUI/Tab.pm:513
 msgid "Extrusion width"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:515
+#: lib/Slic3r/GUI/Tab.pm:518
 msgid "Flow"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:519
+#: lib/Slic3r/GUI/Tab.pm:522
 msgid "Other"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:531
+#: lib/Slic3r/GUI/Tab.pm:535
 #, fuzzy
 msgid "Filament Settings"
 msgstr "Param. d'impression"
 
-#: lib/Slic3r/GUI/Tab.pm:542
+#: lib/Slic3r/GUI/Tab.pm:546
 msgid "Temperature (°C)"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:546
+#: lib/Slic3r/GUI/Tab.pm:550
 msgid "Extruder"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:550
+#: lib/Slic3r/GUI/Tab.pm:554
 msgid "Bed"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:557
+#: lib/Slic3r/GUI/Tab.pm:561
 msgid "Cooling"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:559
+#: lib/Slic3r/GUI/Tab.pm:563
 msgid "Enable"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:570
+#: lib/Slic3r/GUI/Tab.pm:574
 #, fuzzy
 msgid "Fan settings"
 msgstr "Param. d'impression"
 
-#: lib/Slic3r/GUI/Tab.pm:574
+#: lib/Slic3r/GUI/Tab.pm:578
 msgid "Fan speed"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:583
+#: lib/Slic3r/GUI/Tab.pm:587
 msgid "Cooling thresholds"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:597
+#: lib/Slic3r/GUI/Tab.pm:601
 #, perl-format
 msgid ""
 "If estimated layer time is below ~%ds, fan will run at 100%% and print speed "
@@ -745,7 +857,7 @@ msgid ""
 "speed will never be reduced below %dmm/s)."
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:600
+#: lib/Slic3r/GUI/Tab.pm:604
 #, perl-format
 msgid ""
 "\n"
@@ -753,89 +865,89 @@ msgid ""
 "proportionally decreasing speed between %d%% and %d%%."
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:604
+#: lib/Slic3r/GUI/Tab.pm:608
 #, perl-format
 msgid ""
 "\n"
 "During the other layers, fan will always run at %d%%."
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:606
+#: lib/Slic3r/GUI/Tab.pm:610
 msgid ""
 "\n"
 "During the other layers, fan will be turned off."
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:624
+#: lib/Slic3r/GUI/Tab.pm:629
 #, fuzzy
 msgid "Printer Settings"
 msgstr "Param. d'impression"
 
-#: lib/Slic3r/GUI/Tab.pm:631
+#: lib/Slic3r/GUI/Tab.pm:636
 msgid "General"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:633
+#: lib/Slic3r/GUI/Tab.pm:638
 msgid "Size and coordinates"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:637
+#: lib/Slic3r/GUI/Tab.pm:642
 msgid "Firmware"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:641
+#: lib/Slic3r/GUI/Tab.pm:646
 msgid "Capabilities"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:646
+#: lib/Slic3r/GUI/Tab.pm:651
 msgid "Number of extruders of the printer."
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:660
+#: lib/Slic3r/GUI/Tab.pm:665
 msgid "Custom G-code"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:662
+#: lib/Slic3r/GUI/Tab.pm:667
 #, fuzzy
 msgid "Start G-code"
 msgstr "Export G-code…"
 
-#: lib/Slic3r/GUI/Tab.pm:667
+#: lib/Slic3r/GUI/Tab.pm:672
 #, fuzzy
 msgid "End G-code"
 msgstr "Export G-code…"
 
-#: lib/Slic3r/GUI/Tab.pm:672
+#: lib/Slic3r/GUI/Tab.pm:677
 msgid "Layer change G-code"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:677
+#: lib/Slic3r/GUI/Tab.pm:682
 msgid "Tool change G-code"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:708
+#: lib/Slic3r/GUI/Tab.pm:713
 msgid "Extruder "
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:710
+#: lib/Slic3r/GUI/Tab.pm:715
 msgid "Size"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:714
+#: lib/Slic3r/GUI/Tab.pm:719
 msgid "Position (for multi-extruder printers)"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:718
+#: lib/Slic3r/GUI/Tab.pm:723
 msgid "Retraction"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:725
+#: lib/Slic3r/GUI/Tab.pm:730
 msgid ""
 "Retraction when tool is disabled (advanced settings for multi-extruder "
 "setups)"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:782
+#: lib/Slic3r/GUI/Tab.pm:787
 msgid ""
 "Your configuration was imported. However, Slic3r is currently only able to "
 "import settings for the first defined filament. We recommend you don't use "
@@ -843,11 +955,11 @@ msgid ""
 "in preset management system instead."
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:850
+#: lib/Slic3r/GUI/Tab.pm:856
 msgid "Save preset"
 msgstr ""
 
-#: lib/Slic3r/GUI/Tab.pm:878
+#: lib/Slic3r/GUI/Tab.pm:884
 msgid ""
 "The supplied name is not valid; the following characters are not allowed: "
 "<>:/|?*\""
