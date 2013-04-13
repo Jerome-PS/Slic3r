@@ -26,8 +26,10 @@ my $windows=($^O=~/Win/)?1:0;# Are we running on windows?
 if($windows){
 	use Win32::OLE::NLS qw (GetSystemDefaultLangID :DEFAULT :LANG :SUBLANG);
 	my $langid = GetSystemDefaultLangID();
-	if($langid==MAKELANGID(LANG_FRENCH, SUBLANG_FRENCH)+1){
+	if($langid==MAKELANGID(LANG_FRENCH, SUBLANG_FRENCH)){
 		$ENV{LC_MESSAGES} = 'fr_FR.UTF-8';
+	}elsif($langid==MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US)){
+		$ENV{LC_MESSAGES} = 'en_US.UTF-8';
 	}else{
 		print "Unidentified LANGID $langid, add it to slic3r.pl\n"
 	}
@@ -97,6 +99,7 @@ if ($opt{save}) {
 
 # launch GUI
 my $gui;
+require Slic3r::GUI;		#!!!
 if (!@ARGV && !$opt{save} && eval "require Slic3r::GUI; 1") {
     {
         no warnings 'once';
