@@ -90,6 +90,9 @@ The author of the Silk icon set is Mark James.
         -o, --output <file> File to output gcode to (by default, the file will be saved
                             into the same directory as the input file using the 
                             --output-filename-format to generate the filename)
+      GUI options:
+        --no-plater         Disable the plater tab
+        --gui-mode          Overrides the configured mode (simple/expert)
     
       Output options:
         --output-filename-format
@@ -140,7 +143,7 @@ The author of the Silk icon set is Mark James.
                             (default: 30)
         --external-perimeter-speed
                             Speed of print moves for the external perimeter in mm/s or % over perimeter speed
-                            (default: 100%)
+                            (default: 70%)
         --infill-speed      Speed of print moves in mm/s (default: 60)
         --solid-infill-speed Speed of print moves for solid surfaces in mm/s or % over infill speed
                             (default: 60)
@@ -159,6 +162,9 @@ The author of the Silk icon set is Mark James.
                             to disable; default: 0)
         --infill-acceleration
                             Overrides firmware's default acceleration for infill. (mm/s^2, set zero
+                            to disable; default: 0)
+        --bridge-acceleration
+                            Overrides firmware's default acceleration for bridges. (mm/s^2, set zero
                             to disable; default: 0)
         --default-acceleration
                             Acceleration will be reset to this value after the specific settings above
@@ -191,14 +197,16 @@ The author of the Silk icon set is Mark James.
         --extra-perimeters  Add more perimeters when needed (default: yes)
         --randomize-start   Randomize starting point across layers (default: yes)
         --avoid-crossing-perimeters Optimize travel moves so that no perimeters are crossed (default: no)
+        --external-perimeters-first Reverse perimeter order. (default: no)
         --only-retract-when-crossing-perimeters
                             Disable retraction when travelling between infill paths inside the same island.
-                            (default: no)
+                            (default: yes)
         --solid-infill-below-area
                             Force solid infill when a region has a smaller area than this threshold
                             (mm^2, default: 70)
         --infill-only-where-needed
                             Only infill under ceilings (default: no)
+        --infill-first      Make infill before perimeters (default: no)
       
        Support material options:
         --support-material  Generate support material for overhangs
@@ -229,6 +237,9 @@ The author of the Silk icon set is Mark James.
         --retract-before-travel
                             Only retract before travel moves of this length in mm (default: 2)
         --retract-lift      Lift Z by the given distance in mm when retracting (default: 0)
+        --retract-layer-change
+                            Enforce a retraction before each Z move (default: yes)
+        --wipe              Wipe the nozzle while doing a retraction (default: no)
         
        Retraction options for multi-extruder setups:
         --retract-length-toolchange
@@ -245,7 +256,7 @@ The author of the Silk icon set is Mark James.
         --fan-below-layer-time Enable fan if layer print time is below this approximate number 
                             of seconds (default: 60)
         --slowdown-below-layer-time Slow down if layer print time is below this approximate number
-                            of seconds (default: 15)
+                            of seconds (default: 30)
         --min-print-speed   Minimum print speed (mm/s, default: 10)
         --disable-fan-first-layers Disable fan for the first N layers (default: 1)
         --fan-always-on     Keep fan always on at min fan speed, even for layers that don't need
@@ -279,6 +290,7 @@ The author of the Silk icon set is Mark James.
        
        Miscellaneous options:
         --notes             Notes to be added as comments to the output file
+        --resolution        Minimum detail resolution (mm, set zero for full resolution, default: 0)
       
        Flow options (advanced):
         --extrusion-width   Set extrusion width manually; it accepts either an absolute value in mm
@@ -289,6 +301,10 @@ The author of the Silk icon set is Mark James.
                             Set a different extrusion width for perimeters
         --infill-extrusion-width
                             Set a different extrusion width for infill
+        --solid-infill-extrusion-width
+                            Set a different extrusion width for solid infill
+        --top-infill-extrusion-width
+                            Set a different extrusion width for top infill
         --support-material-extrusion-width
                             Set a different extrusion width for support material
         --bridge-flow-ratio Multiplier for extrusion when bridging (> 0, default: 1)

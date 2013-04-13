@@ -7,7 +7,7 @@ my $build = Module::Build->new(
     dist_version    => '0.1',
     license         => 'perl',
     requires        => {
-        'Boost::Geometry::Utils'    => '0.06',
+        'Boost::Geometry::Utils'    => '0.08',
         'Encode::Locale'            => '0',
         'File::Basename'            => '0',
         'File::Spec'                => '0',
@@ -26,6 +26,7 @@ my $build = Module::Build->new(
         'IO::Scalar' => '0.10',
     },
     recommends     => {
+        'Class::XSAccessor' => '0',
         'Growl::GNTP' => '0.15',
         'Net::DBus'   => '0',
         'XML::SAX::ExpatXS' => '0',

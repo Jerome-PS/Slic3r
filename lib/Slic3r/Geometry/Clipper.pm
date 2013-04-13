@@ -4,7 +4,7 @@ use warnings;
 
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT_OK = qw(safety_offset offset offset_ex
+our @EXPORT_OK = qw(safety_offset safety_offset_ex offset offset_ex collapse_ex
     diff_ex diff union_ex intersection_ex xor_ex PFT_EVENODD JT_MITER JT_ROUND
     JT_SQUARE is_counter_clockwise);
 
@@ -15,6 +15,11 @@ our $clipper = Math::Clipper->new;
 sub safety_offset {
     my ($polygons, $factor) = @_;
     return Math::Clipper::offset($polygons, $factor // (scale 1e-05), 100000, JT_MITER, 2);
+}
+
+sub safety_offset_ex {
+    # offset polygons and then apply holes to the right contours
+    return @{ union_ex([ safety_offset(@_) ]) };
 }
 
 sub offset {
@@ -45,7 +50,15 @@ sub diff_ex {
 }
 
 sub diff {
-    return [ map @$_, diff_ex(@_) ];
+    my ($subject, $clip, $safety_offset) = @_;
+    
+    $clipper->clear;
+    $clipper->add_subject_polygons($subject);
+    $clipper->add_clip_polygons($safety_offset ? safety_offset($clip) : $clip);
+    return [
+        map Slic3r::Polygon->new($_),
+            @{ $clipper->execute(CT_DIFFERENCE, PFT_NONZERO, PFT_NONZERO) },
+    ];
 }
 
 sub union_ex {
@@ -81,6 +94,25 @@ sub xor_ex {
         map Slic3r::ExPolygon->new($_),
             @{ $clipper->ex_execute(CT_XOR, $jointype, $jointype) },
     ];
+}
+
+sub collapse_ex {
+    my ($polygons, $width) = @_;
+    my @result = offset(
+        [ offset($polygons, -$width/2,) ],
+        +$width/2,
+    );
+    return union_ex([@result]);
+}
+
+sub simplify_polygon {
+    my ($polygon, $pft) = @_;
+    return @{ Math::Clipper::simplify_polygon($polygon, $pft // PFT_NONZERO) };
+}
+
+sub simplify_polygons {
+    my ($polygons, $pft) = @_;
+    return @{ Math::Clipper::simplify_polygons($polygons, $pft // PFT_NONZERO) };
 }
 
 1;

@@ -1,4 +1,4 @@
-use Test::More tests => 4;
+use Test::More tests => 5;
 use strict;
 use warnings;
 
@@ -42,6 +42,7 @@ my $test = sub {
     1;
 };
 
+$config->set('start_gcode',             '');  # to avoid dealing with the nozzle lift in start G-code
 $config->set('layer_height', 0.3);
 $config->set('first_layer_height', 0.2);
 ok $test->(), "absolute first layer height";
@@ -54,5 +55,16 @@ ok $test->(), "positive Z offset";
 
 $config->set('z_offset', -0.8);
 ok $test->(), "negative Z offset";
+
+{
+    my $config = Slic3r::Config->new_from_defaults;
+    $config->set('nozzle_diameter', [0.35]);
+    $config->set('layer_height', 0.1333);
+    
+    my $print = Slic3r::Test::init_print('2x20x10', config => $config);
+    $print->init_extruders;
+    $_->region(0) for @{$print->objects->[0]->layers};  # init layer regions
+    ok $print->objects->[0]->layers->[1]->support_material_contact_height > 0, 'support_material_contact_height is positive';
+}
 
 __END__

@@ -119,7 +119,8 @@ sub add_model {
             print       => $self,
             meshes      => [ @meshes ],
             size        => [ $complete_mesh->size ],
-            input_file  => $object->input_file
+            input_file  => $object->input_file,
+            layer_height_ranges => $object->layer_height_ranges,
         );
         push @{$self->objects}, $print_object;
         
@@ -133,7 +134,7 @@ sub add_model {
         
         if ($object->instances) {
             # replace the default [0,0] instance with the custom ones
-            @{$print_object->copies} = map [ scale $_->offset->[X], scale $_->offset->[Y] ], @{$object->instances};
+            $print_object->copies([ map [ scale $_->offset->[X], scale $_->offset->[Y] ], @{$object->instances} ]);
         }
     }
 }
@@ -150,7 +151,9 @@ sub validate {
                 {
                     my @points = map [ @$_[X,Y] ], map @{$_->vertices}, @{$self->objects->[$obj_idx]->meshes};
                     my $convex_hull = Slic3r::Polygon->new(convex_hull(\@points));
-                    $clearance = +($convex_hull->offset(scale $Slic3r::Config->extruder_clearance_radius / 2, 1, JT_ROUND))[0];
+                    ($clearance) = map Slic3r::Polygon->new($_), 
+                                        Slic3r::Geometry::Clipper::offset(
+                                            [$convex_hull], scale $Slic3r::Config->extruder_clearance_radius / 2, 1, JT_ROUND);
                 }
                 for my $copy (@{$self->objects->[$obj_idx]->copies}) {
                     my $copy_clearance = $clearance->clone;
@@ -195,31 +198,26 @@ sub init_extruders {
         );
     }
     
-    # calculate default flows
-    $Slic3r::flow = $self->extruders->[0]->make_flow(
-        width           => $self->config->extrusion_width,
-    );
-    $Slic3r::first_layer_flow = $self->extruders->[0]->make_flow(
-        layer_height    => $self->config->get_value('first_layer_height'),
-        width           => $self->config->first_layer_extrusion_width,
-    );
-    
     # calculate regions' flows
     for my $region_id (0 .. $#{$self->regions}) {
         my $region = $self->regions->[$region_id];
         
         # per-role extruders and flows
-        for (qw(perimeter infill)) {
+        for (qw(perimeter infill solid_infill top_infill)) {
+            my $extruder_name = $_;
+            $extruder_name =~ s/^(?:solid|top)_//;
             $region->extruders->{$_} = ($self->regions_count > 1)
                 ? $self->extruders->[$extruder_mapping{$region_id}]
-                : $self->extruders->[$self->config->get("${_}_extruder")-1];
+                : $self->extruders->[$self->config->get("${extruder_name}_extruder")-1];
             $region->flows->{$_} = $region->extruders->{$_}->make_flow(
                 width => $self->config->get("${_}_extrusion_width") || $self->config->extrusion_width,
+                role  => $_,
             );
             $region->first_layer_flows->{$_} = $region->extruders->{$_}->make_flow(
                 layer_height    => $self->config->get_value('first_layer_height'),
                 width           => $self->config->first_layer_extrusion_width,
-            );
+                role            => $_,
+            ) if $self->config->first_layer_extrusion_width;
         }
     }
     
@@ -228,15 +226,14 @@ sub init_extruders {
         my $extruder = $self->extruders->[$self->config->support_material_extruder-1];
         $self->support_material_flow($extruder->make_flow(
             width => $self->config->support_material_extrusion_width || $self->config->extrusion_width,
+            role  => 'support_material',
         ));
         $self->first_layer_support_material_flow($extruder->make_flow(
             layer_height    => $self->config->get_value('first_layer_height'),
             width           => $self->config->first_layer_extrusion_width,
+            role            => 'support_material',
         ));
     }
-    
-    Slic3r::debugf "Default flow width = %s (spacing = %s)\n",
-        $Slic3r::flow->width, $Slic3r::flow->spacing;
 }
 
 sub object_copies {
@@ -323,6 +320,16 @@ sub size {
     return [ $bb[X2] - $bb[X1], $bb[Y2] - $bb[Y1] ];
 }
 
+sub _simplify_slices {
+    my $self = shift;
+    my ($distance) = @_;
+    
+    foreach my $layer (map @{$_->layers}, @{$self->objects}) {
+        @$_ = map $_->simplify($distance), @$_
+            for $layer->slices, (map $_->slices, @{$layer->regions});
+    }
+}
+
 sub export_gcode {
     my $self = shift;
     my %params = @_;
@@ -334,7 +341,12 @@ sub export_gcode {
     # skein the STL into layers
     # each layer has surfaces with holes
     $status_cb->(10, "Processing triangulated mesh");
-    $_->slice(keep_meshes => $params{keep_meshes}) for @{$self->objects};
+    $_->slice for @{$self->objects};
+    
+    if ($Slic3r::Config->resolution) {
+        $status_cb->(15, "Simplifying input");
+        $self->_simplify_slices(scale $Slic3r::Config->resolution);
+    }
     
     # make perimeters
     # this will add a set of extrusion loops to each layer
@@ -344,12 +356,10 @@ sub export_gcode {
     
     # simplify slices (both layer and region slices),
     # we only need the max resolution for perimeters
-    foreach my $layer (map @{$_->layers}, @{$self->objects}) {
-        $_->simplify(&Slic3r::SCALED_RESOLUTION)
-            for @{$layer->slices}, (map $_->expolygon, map @{$_->slices}, @{$layer->regions});
-    }
+    $self->_simplify_slices(&Slic3r::SCALED_RESOLUTION);
     
-    # this will transform $layer->fill_surfaces from expolygon 
+    # this will assign a type (top/bottom/internal) to $layerm->slices
+    # and transform $layerm->fill_surfaces from expolygon 
     # to typed top/bottom/internal surfaces;
     $status_cb->(30, "Detecting solid surfaces");
     $_->detect_surfaces_type for @{$self->objects};
@@ -361,13 +371,16 @@ sub export_gcode {
     # this will detect bridges and reverse bridges
     # and rearrange top/bottom/internal surfaces
     $status_cb->(45, "Detect bridges");
-    $_->process_bridges for map @{$_->regions}, map @{$_->layers}, @{$self->objects};
+    $_->process_external_surfaces for map @{$_->regions}, map @{$_->layers}, @{$self->objects};
     
     # detect which fill surfaces are near external layers
     # they will be split in internal and internal-solid surfaces
     $status_cb->(60, "Generating horizontal shells");
     $_->discover_horizontal_shells for @{$self->objects};
     $_->clip_fill_surfaces for @{$self->objects};
+    # the following step needs to be done before combination because it may need
+    # to remove only half of the combined infill
+    $_->bridge_over_infill for @{$self->objects};
     
     # combine fill surfaces to honor the "infill every N layers" option
     $status_cb->(70, "Combining infill");
@@ -435,6 +448,18 @@ sub export_gcode {
     $self->make_skirt;
     $self->make_brim;  # must come after make_skirt
     
+    # time to make some statistics
+    if (0) {
+        eval "use Devel::Size";
+        print  "MEMORY USAGE:\n";
+        printf "  meshes        = %.1fMb\n", List::Util::sum(map Devel::Size::total_size($_->meshes), @{$self->objects})/1024/1024;
+        printf "  layer slices  = %.1fMb\n", List::Util::sum(map Devel::Size::total_size($_->slices), map @{$_->layers}, @{$self->objects})/1024/1024;
+        printf "  region slices = %.1fMb\n", List::Util::sum(map Devel::Size::total_size($_->slices), map @{$_->regions}, map @{$_->layers}, @{$self->objects})/1024/1024;
+        printf "  perimeters    = %.1fMb\n", List::Util::sum(map Devel::Size::total_size($_->perimeters), map @{$_->regions}, map @{$_->layers}, @{$self->objects})/1024/1024;
+        printf "  fills         = %.1fMb\n", List::Util::sum(map Devel::Size::total_size($_->fills), map @{$_->regions}, map @{$_->layers}, @{$self->objects})/1024/1024;
+        printf "  print object  = %.1fMb\n", Devel::Size::total_size($self)/1024/1024;
+    }
+    
     # output everything to a G-code file
     my $output_file = $self->expanded_output_filepath($params{output_file});
     $status_cb->(90, "Exporting G-code" . ($output_file ? " to $output_file" : ""));
@@ -471,7 +496,7 @@ sub export_svg {
     # calls ->perimeter_flow
     $self->init_extruders;
     
-    $_->slice(keep_meshes => $params{keep_meshes}) for @{$self->objects};
+    $_->slice for @{$self->objects};
     $self->arrange_objects;
     
     my $output_file = $self->expanded_output_filepath($params{output_file});
@@ -573,7 +598,10 @@ sub make_skirt {
     my $convex_hull = convex_hull(\@points);
     
     my @extruded_length = ();  # for each extruder
-    my $spacing = $Slic3r::first_layer_flow->spacing;
+    
+    # TODO: use each extruder's own flow
+    my $spacing = $self->objects->[0]->layers->[0]->regions->[0]->perimeter_flow->spacing;
+    
     my $first_layer_height = $Slic3r::Config->get_value('first_layer_height');
     my @extruders_e_per_mm = ();
     my $extruder_idx = 0;
@@ -612,7 +640,9 @@ sub make_brim {
     my $self = shift;
     return unless $Slic3r::Config->brim_width > 0;
     
-    my $grow_distance = $Slic3r::first_layer_flow->scaled_width / 2;
+    my $flow = $self->objects->[0]->layers->[0]->regions->[0]->perimeter_flow;
+    
+    my $grow_distance = $flow->scaled_width / 2;
     my @islands = (); # array of polygons
     foreach my $obj_idx (0 .. $#{$self->objects}) {
         my $layer0 = $self->objects->[$obj_idx]->layers->[0];
@@ -627,18 +657,19 @@ sub make_brim {
     }
     
     # if brim touches skirt, make it around skirt too
-    if ($Slic3r::Config->skirt_distance + (($Slic3r::Config->skirts - 1) * $Slic3r::first_layer_flow->spacing) <= $Slic3r::Config->brim_width) {
+    # TODO: calculate actual skirt width (using each extruder's flow in multi-extruder setups)
+    if ($Slic3r::Config->skirt_distance + (($Slic3r::Config->skirts - 1) * $flow->spacing) <= $Slic3r::Config->brim_width) {
         push @islands, map $_->unpack->split_at_first_point->polyline->grow($grow_distance), @{$self->skirt};
     }
     
-    my $num_loops = sprintf "%.0f", $Slic3r::Config->brim_width / $Slic3r::first_layer_flow->width;
+    my $num_loops = sprintf "%.0f", $Slic3r::Config->brim_width / $flow->width;
     for my $i (reverse 1 .. $num_loops) {
         # JT_SQUARE ensures no vertex is outside the given offset distance
         push @{$self->brim}, Slic3r::ExtrusionLoop->pack(
             polygon         => Slic3r::Polygon->new($_),
             role            => EXTR_ROLE_SKIRT,
-            flow_spacing    => $Slic3r::first_layer_flow->spacing,
-        ) for Slic3r::Geometry::Clipper::offset(\@islands, $i * $Slic3r::first_layer_flow->scaled_spacing, undef, JT_SQUARE);
+            flow_spacing    => $flow->spacing,
+        ) for Slic3r::Geometry::Clipper::offset(\@islands, ($i - 0.5) * $flow->scaled_spacing, undef, JT_SQUARE); # -0.5 because islands are not represented by their centerlines
         # TODO: we need the offset inwards/offset outwards logic to avoid overlapping extrusions
     }
 }
@@ -664,7 +695,7 @@ sub write_gcode {
     print $fh "; $_\n" foreach split /\R/, $Slic3r::Config->notes;
     print $fh "\n" if $Slic3r::Config->notes;
     
-    for (qw(layer_height perimeters top_solid_layers bottom_solid_layers fill_density perimeter_speed infill_speed travel_speed scale)) {
+    for (qw(layer_height perimeters top_solid_layers bottom_solid_layers fill_density perimeter_speed infill_speed travel_speed)) {
         printf $fh "; %s = %s\n", $_, $Slic3r::Config->$_;
     }
     for (qw(nozzle_diameter filament_diameter extrusion_multiplier)) {
@@ -672,10 +703,12 @@ sub write_gcode {
     }
     printf $fh "; perimeters extrusion width = %.2fmm\n", $self->regions->[0]->flows->{perimeter}->width;
     printf $fh "; infill extrusion width = %.2fmm\n", $self->regions->[0]->flows->{infill}->width;
+    printf $fh "; solid infill extrusion width = %.2fmm\n", $self->regions->[0]->flows->{solid_infill}->width;
+    printf $fh "; top infill extrusion width = %.2fmm\n", $self->regions->[0]->flows->{top_infill}->width;
     printf $fh "; support material extrusion width = %.2fmm\n", $self->support_material_flow->width
         if $self->support_material_flow;
-    printf $fh "; first layer extrusion width = %.2fmm\n", $Slic3r::first_layer_flow->width
-        if $Slic3r::first_layer_flow;
+    printf $fh "; first layer extrusion width = %.2fmm\n", $self->regions->[0]->first_layer_flows->{perimeter}->width
+        if $self->regions->[0]->first_layer_flows->{perimeter};
     print  $fh "\n";
     
     # set up our extruder object
@@ -683,27 +716,25 @@ sub write_gcode {
         multiple_extruders  => (@{$self->extruders} > 1),
         layer_count         => $self->layer_count,
     );
-    my $min_print_speed = 60 * $Slic3r::Config->min_print_speed;
-    my $dec = $gcodegen->dec;
+    print $fh "G21 ; set units to millimeters\n";
     print $fh $gcodegen->set_fan(0, 1) if $Slic3r::Config->cooling && $Slic3r::Config->disable_fan_first_layers;
     
     # write start commands to file
     printf $fh $gcodegen->set_bed_temperature($Slic3r::Config->first_layer_bed_temperature, 1),
-        if $Slic3r::Config->first_layer_bed_temperature && $Slic3r::Config->start_gcode !~ /M190/i;
+        if $Slic3r::Config->first_layer_bed_temperature && $Slic3r::Config->start_gcode !~ /M(?:190|140)/i;
     my $print_first_layer_temperature = sub {
         for my $t (grep $self->extruders->[$_], 0 .. $#{$Slic3r::Config->first_layer_temperature}) {
             printf $fh $gcodegen->set_temperature($self->extruders->[$t]->first_layer_temperature, 0, $t)
                 if $self->extruders->[$t]->first_layer_temperature;
         }
     };
-    $print_first_layer_temperature->();
+    $print_first_layer_temperature->() if $Slic3r::Config->start_gcode !~ /M(?:109|104)/i;
     printf $fh "%s\n", $Slic3r::Config->replace_options($Slic3r::Config->start_gcode);
     for my $t (grep $self->extruders->[$_], 0 .. $#{$Slic3r::Config->first_layer_temperature}) {
         printf $fh $gcodegen->set_temperature($self->extruders->[$t]->first_layer_temperature, 1, $t)
-            if $self->extruders->[$t]->first_layer_temperature && $Slic3r::Config->start_gcode !~ /M109/i;
+            if $self->extruders->[$t]->first_layer_temperature && $Slic3r::Config->start_gcode !~ /M(?:109|104)/i;
     }
     print  $fh "G90 ; use absolute coordinates\n";
-    print  $fh "G21 ; set units to millimeters\n";
     if ($Slic3r::Config->gcode_flavor =~ /^(?:reprap|teacup)$/) {
         printf $fh $gcodegen->reset_e;
         if ($Slic3r::Config->gcode_flavor =~ /^(?:reprap|makerbot|sailfish)$/) {
@@ -750,23 +781,24 @@ sub write_gcode {
     # prepare the logic to print one layer
     my $skirt_done = 0;  # count of skirt layers done
     my $brim_done = 0;
+    my $second_layer_things_done = 0;
     my $last_obj_copy = "";
     my $extrude_layer = sub {
-        my ($layer_id, $object_copies) = @_;
+        my ($layer, $object_copies) = @_;
         my $gcode = "";
         
-        if ($layer_id == 1) {
+        if (!$second_layer_things_done && $layer->id == 1) {
             for my $t (grep $self->extruders->[$_], 0 .. $#{$Slic3r::Config->temperature}) {
                 $gcode .= $gcodegen->set_temperature($self->extruders->[$t]->temperature, 0, $t)
                     if $self->extruders->[$t]->temperature && $self->extruders->[$t]->temperature != $self->extruders->[$t]->first_layer_temperature;
             }
             $gcode .= $gcodegen->set_bed_temperature($Slic3r::Config->bed_temperature)
                 if $Slic3r::Config->bed_temperature && $Slic3r::Config->bed_temperature != $Slic3r::Config->first_layer_bed_temperature;
+            $second_layer_things_done = 1;
         }
         
         # set new layer, but don't move Z as support material contact areas may need an intermediate one
-        $gcode .= $gcodegen->change_layer($self->objects->[$object_copies->[0][0]]->layers->[$layer_id]);
-        $gcodegen->elapsed_time(0);
+        $gcode .= $gcodegen->change_layer($layer);
         
         # prepare callback to call as soon as a Z command is generated
         $gcodegen->move_z_callback(sub {
@@ -781,14 +813,14 @@ sub write_gcode {
             $gcode .= $gcodegen->set_extruder($self->extruders->[0]);  # move_z requires extruder
             $gcode .= $gcodegen->move_z($gcodegen->layer->print_z);
             # skip skirt if we have a large brim
-            if ($layer_id < $Slic3r::Config->skirt_height) {
+            if ($layer->id < $Slic3r::Config->skirt_height) {
                 # distribute skirt loops across all extruders
                 for my $i (0 .. $#{$self->skirt}) {
                     # when printing layers > 0 ignore 'min_skirt_length' and 
                     # just use the 'skirts' setting; also just use the current extruder
-                    last if ($layer_id > 0) && ($i >= $Slic3r::Config->skirts);
+                    last if ($layer->id > 0) && ($i >= $Slic3r::Config->skirts);
                     $gcode .= $gcodegen->set_extruder($self->extruders->[ ($i/@{$self->extruders}) % @{$self->extruders} ])
-                        if $layer_id == 0;
+                        if $layer->id == 0;
                     $gcode .= $gcodegen->extrude_loop($self->skirt->[$i], 'skirt');
                 }
             }
@@ -797,7 +829,7 @@ sub write_gcode {
         }
         
         # extrude brim
-        if ($layer_id == 0 && !$brim_done) {
+        if (!$brim_done) {
             $gcode .= $gcodegen->set_extruder($self->extruders->[$Slic3r::Config->support_material_extruder-1]);  # move_z requires extruder
             $gcode .= $gcodegen->move_z($gcodegen->layer->print_z);
             $gcodegen->set_shift(@shift);
@@ -806,11 +838,9 @@ sub write_gcode {
             $gcodegen->straight_once(1);
         }
         
-        for my $obj_copy (@$object_copies) {
-            my ($obj_idx, $copy) = @$obj_copy;
-            $gcodegen->new_object(1) if $last_obj_copy && $last_obj_copy ne "${obj_idx}_${copy}";
-            $last_obj_copy = "${obj_idx}_${copy}";
-            my $layer = $self->objects->[$obj_idx]->layers->[$layer_id];
+        for my $copy (@$object_copies) {
+            $gcodegen->new_object(1) if $last_obj_copy && $last_obj_copy ne "$copy";
+            $last_obj_copy = "$copy";
             
             $gcodegen->set_shift(map $shift[$_] + unscale $copy->[$_], X,Y);
             
@@ -835,71 +865,81 @@ sub write_gcode {
             # set actual Z - this will force a retraction
             $gcode .= $gcodegen->move_z($layer->print_z);
             
-            foreach my $region_id (0 .. ($self->regions_count-1)) {
+            # tweak region ordering to save toolchanges
+            my @region_ids = 0 .. ($self->regions_count-1);
+            if ($gcodegen->multiple_extruders) {
+                my $last_extruder = $gcodegen->extruder;
+                my $best_region_id = first { $self->regions->[$_]->extruders->{perimeter} eq $last_extruder } @region_ids;
+                @region_ids = ($best_region_id, grep $_ != $best_region_id, @region_ids) if $best_region_id;
+            }
+            
+            foreach my $region_id (@region_ids) {
                 my $layerm = $layer->regions->[$region_id];
                 my $region = $self->regions->[$region_id];
                 
-                # extrude perimeters
-                if (@{ $layerm->perimeters }) {
-                    $gcode .= $gcodegen->set_extruder($region->extruders->{perimeter});
-                    $gcode .= $gcodegen->set_acceleration($Slic3r::Config->perimeter_acceleration);
-                    $gcode .= $gcodegen->extrude($_, 'perimeter') for @{ $layerm->perimeters };
-                    $gcode .= $gcodegen->set_acceleration($Slic3r::Config->default_acceleration)
-                        if $Slic3r::Config->perimeter_acceleration;
+                my @islands = ();
+                if ($Slic3r::Config->avoid_crossing_perimeters) {
+                    push @islands, map +{ perimeters => [], fills => [] }, @{$layer->slices};
+                    PERIMETER: foreach my $perimeter (@{$layerm->perimeters}) {
+                        my $p = $perimeter->unpack;
+                        for my $i (0 .. $#{$layer->slices}-1) {
+                            if ($layer->slices->[$i]->contour->encloses_point($p->first_point)) {
+                                push @{ $islands[$i]{perimeters} }, $p;
+                                next PERIMETER;
+                            }
+                        }
+                        push @{ $islands[-1]{perimeters} }, $p; # optimization
+                    }
+                    FILL: foreach my $fill (@{$layerm->fills}) {
+                        my $f = $fill->unpack;
+                        for my $i (0 .. $#{$layer->slices}-1) {
+                            if ($layer->slices->[$i]->contour->encloses_point($f->first_point)) {
+                                push @{ $islands[$i]{fills} }, $f;
+                                next FILL;
+                            }
+                        }
+                        push @{ $islands[-1]{fills} }, $f; # optimization
+                    }
+                } else {
+                    push @islands, {
+                        perimeters  => $layerm->perimeters,
+                        fills       => $layerm->fills,
+                    };
                 }
                 
-                # extrude fills
-                if (@{ $layerm->fills }) {
-                    $gcode .= $gcodegen->set_extruder($region->extruders->{infill});
-                    $gcode .= $gcodegen->set_acceleration($Slic3r::Config->infill_acceleration);
-                    for my $fill (@{ $layerm->fills }) {
-                        if ($fill->isa('Slic3r::ExtrusionPath::Collection')) {
-                            $gcode .= $gcodegen->extrude($_, 'fill') 
-                                for $fill->chained_path($gcodegen->last_pos);
-                        } else {
-                            $gcode .= $gcodegen->extrude($fill, 'fill') ;
+                foreach my $island (@islands) {
+                    my $extrude_perimeters = sub {
+                        return if !@{ $island->{perimeters} };
+                        $gcode .= $gcodegen->set_extruder($region->extruders->{perimeter});
+                        $gcode .= $gcodegen->extrude($_, 'perimeter') for @{ $island->{perimeters} };
+                    };
+                    
+                    my $extrude_fills = sub {
+                        return if !@{ $island->{fills} };
+                        $gcode .= $gcodegen->set_extruder($region->extruders->{infill});
+                        for my $fill (@{ $island->{fills} }) {
+                            if ($fill->isa('Slic3r::ExtrusionPath::Collection')) {
+                                $gcode .= $gcodegen->extrude($_, 'fill') 
+                                    for $fill->chained_path($gcodegen->last_pos);
+                            } else {
+                                $gcode .= $gcodegen->extrude($fill, 'fill') ;
+                            }
                         }
+                    };
+                    
+                    # give priority to infill if we were already using its extruder and it wouldn't
+                    # be good for perimeters
+                    if ($Slic3r::Config->infill_first
+                        || ($gcodegen->multiple_extruders && $region->extruders->{infill} eq $gcodegen->extruder) && $region->extruders->{infill} ne $region->extruders->{perimeter}) {
+                        $extrude_fills->();
+                        $extrude_perimeters->();
+                    } else {
+                        $extrude_perimeters->();
+                        $extrude_fills->();
                     }
-                    $gcode .= $gcodegen->set_acceleration($Slic3r::Config->default_acceleration)
-                        if $Slic3r::Config->infill_acceleration;
                 }
             }
         }
-        return if !$gcode;
-        
-        my $fan_speed = $Slic3r::Config->fan_always_on ? $Slic3r::Config->min_fan_speed : 0;
-        my $speed_factor = 1;
-        if ($Slic3r::Config->cooling) {
-            my $layer_time = $gcodegen->elapsed_time;
-            Slic3r::debugf "Layer %d estimated printing time: %d seconds\n", $layer_id, $layer_time;
-            if ($layer_time < $Slic3r::Config->slowdown_below_layer_time) {
-                $fan_speed = $Slic3r::Config->max_fan_speed;
-                $speed_factor = $layer_time / $Slic3r::Config->slowdown_below_layer_time;
-            } elsif ($layer_time < $Slic3r::Config->fan_below_layer_time) {
-                $fan_speed = $Slic3r::Config->max_fan_speed - ($Slic3r::Config->max_fan_speed - $Slic3r::Config->min_fan_speed)
-                    * ($layer_time - $Slic3r::Config->slowdown_below_layer_time)
-                    / ($Slic3r::Config->fan_below_layer_time - $Slic3r::Config->slowdown_below_layer_time); #/
-            }
-            Slic3r::debugf "  fan = %d%%, speed = %d%%\n", $fan_speed, $speed_factor * 100;
-            
-            if ($speed_factor < 1) {
-                $gcode =~ s/^(?=.*? [XY])(?=.*? E)(?<!;_BRIDGE_FAN_START\n)(G1 .*?F)(\d+(?:\.\d+)?)/
-                    my $new_speed = $2 * $speed_factor;
-                    $1 . sprintf("%.${dec}f", $new_speed < $min_print_speed ? $min_print_speed : $new_speed)
-                    /gexm;
-            }
-            $fan_speed = 0 if $layer_id < $Slic3r::Config->disable_fan_first_layers;
-        }
-        $gcode = $gcodegen->set_fan($fan_speed) . $gcode;
-        
-        # bridge fan speed
-        if (!$Slic3r::Config->cooling || $Slic3r::Config->bridge_fan_speed == 0 || $layer_id < $Slic3r::Config->disable_fan_first_layers) {
-            $gcode =~ s/^;_BRIDGE_FAN_(?:START|END)\n//gm;
-        } else {
-            $gcode =~ s/^;_BRIDGE_FAN_START\n/ $gcodegen->set_fan($Slic3r::Config->bridge_fan_speed, 1) /gmex;
-            $gcode =~ s/^;_BRIDGE_FAN_END\n/ $gcodegen->set_fan($fan_speed, 1) /gmex;
-        }
-        
         return $gcode;
     };
     
@@ -922,35 +962,41 @@ sub write_gcode {
                     print $fh $gcodegen->G0(Slic3r::Point->new(0,0), undef, 0, 'move to origin position for next object');
                 }
                 
-                for my $layer_id (0..$#{$self->objects->[$obj_idx]->layers}) {
+                my $buffer = Slic3r::GCode::CoolingBuffer->new(
+                    config      => $Slic3r::Config,
+                    gcodegen    => $gcodegen,
+                );
+                
+                for my $layer (@{$self->objects->[$obj_idx]->layers}) {
                     # if we are printing the bottom layer of an object, and we have already finished
                     # another one, set first layer temperatures. this happens before the Z move
                     # is triggered, so machine has more time to reach such temperatures
-                    if ($layer_id == 0 && $finished_objects > 0) {
+                    if ($layer->id == 0 && $finished_objects > 0) {
                         printf $fh $gcodegen->set_bed_temperature($Slic3r::Config->first_layer_bed_temperature),
                             if $Slic3r::Config->first_layer_bed_temperature;
                         $print_first_layer_temperature->();
                     }
-                    print $fh $extrude_layer->($layer_id, [[ $obj_idx, $copy ]]);
+                    print $fh $buffer->append($extrude_layer->($layer, [$copy]), $layer);
                 }
+                print $fh $buffer->flush;
                 $finished_objects++;
             }
         }
     } else {
-        for my $layer_id (0..$self->layer_count-1) {
-            my @object_copies = ();
-            for my $obj_idx (grep $self->objects->[$_]->layers->[$layer_id], 0..$#{$self->objects}) {
-                push @object_copies, map [ $obj_idx, $_ ], @{ $self->objects->[$obj_idx]->copies };
-            }
-            print $fh $extrude_layer->($layer_id, \@object_copies);
-        }
+        my $buffer = Slic3r::GCode::CoolingBuffer->new(
+            config      => $Slic3r::Config,
+            gcodegen    => $gcodegen,
+        );
+        print $fh $buffer->append($extrude_layer->($_, $_->object->copies), $_)
+            for sort { $a->print_z <=> $b->print_z } map @{$_->layers}, @{$self->objects};
+        print $fh $buffer->flush;
     }
     
     # save statistic data
     $self->total_extrusion_length($gcodegen->total_extrusion_length);
     
     # write end commands to file
-    print $fh $gcodegen->retract;
+    print $fh $gcodegen->retract if $gcodegen->extruder;  # empty prints don't even set an extruder
     print $fh $gcodegen->set_fan(0);
     printf $fh "%s\n", $Slic3r::Config->replace_options($Slic3r::Config->end_gcode);
     
