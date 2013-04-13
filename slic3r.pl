@@ -22,12 +22,21 @@ use Locale::Messages qw (LC_MESSAGES LC_ALL);
 use POSIX ('setlocale');
 
 # Set the locale according to our environment.
-$ENV{LC_MESSAGES} = 'fr_FR.UTF-8';						#!!!
+my $windows=($^O=~/Win/)?1:0;# Are we running on windows?
+if($windows){
+	use Win32::OLE::NLS qw (GetSystemDefaultLangID :DEFAULT :LANG :SUBLANG);
+	my $langid = GetSystemDefaultLangID();
+	if($langid==MAKELANGID(LANG_FRENCH, SUBLANG_FRENCH)+1){
+		$ENV{LC_MESSAGES} = 'fr_FR.UTF-8';
+	}else{
+		print "Unidentified LANGID $langid, add it to slic3r.pl\n"
+	}
+}
 setlocale (LC_MESSAGES, '');
-print "setlocale=".	setlocale (LC_MESSAGES)."\n";		#!!!
-print $ENV{LC_MESSAGES}."\n";							#!!!
+#print "setlocale=".	setlocale (LC_MESSAGES)."\n";		#!!!
+#print $ENV{LC_MESSAGES}."\n";							#!!!
 
-print __"More";											#!!!
+#print __"More";											#!!!
 
 our %opt = ();
 my %cli_options = ();
