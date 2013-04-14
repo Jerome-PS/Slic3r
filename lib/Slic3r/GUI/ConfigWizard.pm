@@ -5,7 +5,7 @@ use utf8;
 
 use Wx;
 use base 'Wx::Wizard';
-use Locale::TextDomain ('slic3r', '.');
+use Slic3r::i18n::TextDomain ('slic3r');
 
 # adhere to various human interface guidelines
 our $wizard = 'Wizard';
@@ -254,7 +254,7 @@ sub build_index {
 
 package Slic3r::GUI::ConfigWizard::Page::Welcome;
 use base 'Slic3r::GUI::ConfigWizard::Page';
-use Locale::TextDomain ('slic3r', '.');
+use Slic3r::i18n::TextDomain ('slic3r');
 
 sub new {
     my $class = shift;
@@ -270,7 +270,7 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::Firmware;
 use base 'Slic3r::GUI::ConfigWizard::Page';
-use Locale::TextDomain ('slic3r', '.');
+use Slic3r::i18n::TextDomain ('slic3r');
 
 sub new {
     my $class = shift;
@@ -285,7 +285,7 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::Bed;
 use base 'Slic3r::GUI::ConfigWizard::Page';
-use Locale::TextDomain ('slic3r', '.');
+use Slic3r::i18n::TextDomain ('slic3r');
 
 sub new {
     my $class = shift;
@@ -300,7 +300,7 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::Nozzle;
 use base 'Slic3r::GUI::ConfigWizard::Page';
-use Locale::TextDomain ('slic3r', '.');
+use Slic3r::i18n::TextDomain ('slic3r');
 
 sub new {
     my $class = shift;
@@ -315,7 +315,7 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::Filament;
 use base 'Slic3r::GUI::ConfigWizard::Page';
-use Locale::TextDomain ('slic3r', '.');
+use Slic3r::i18n::TextDomain ('slic3r');
 
 sub new {
     my $class = shift;
@@ -331,7 +331,7 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::Temperature;
 use base 'Slic3r::GUI::ConfigWizard::Page';
-use Locale::TextDomain ('slic3r', '.');
+use Slic3r::i18n::TextDomain ('slic3r');
 
 sub new {
     my $class = shift;
@@ -347,7 +347,7 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::BedTemperature;
 use base 'Slic3r::GUI::ConfigWizard::Page';
-use Locale::TextDomain ('slic3r', '.');
+use Slic3r::i18n::TextDomain ('slic3r');
 
 sub new {
     my $class = shift;
@@ -363,7 +363,7 @@ sub new {
 
 package Slic3r::GUI::ConfigWizard::Page::Finished;
 use base 'Slic3r::GUI::ConfigWizard::Page';
-use Locale::TextDomain ('slic3r', '.');
+use Slic3r::i18n::TextDomain ('slic3r');
 
 sub new {
     my $class = shift;

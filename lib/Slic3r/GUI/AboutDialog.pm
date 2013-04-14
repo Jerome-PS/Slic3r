@@ -9,7 +9,7 @@ use Wx::Print;
 use Wx::Html;
 use base 'Wx::Dialog';
 
-use Locale::TextDomain ('slic3r', '.');
+use Slic3r::i18n::TextDomain ('slic3r');
 
 sub new {
     my $class = shift;

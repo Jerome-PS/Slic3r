@@ -13,7 +13,7 @@ use List::Util qw(first);
 use Slic3r;
 $|++;
 
-use Locale::TextDomain ('slic3r', '.');
+use Slic3r::i18n::TextDomain ('slic3r', '.');
 
 # The locale category LC_MESSAGES is not exported by the POSIX
 # module on older Perl versions.  

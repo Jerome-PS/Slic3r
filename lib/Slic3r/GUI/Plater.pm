@@ -13,7 +13,7 @@ use Wx qw(:bitmap :brush :button :cursor :dialog :filedialog :font :keycode :ico
 use Wx::Event qw(EVT_BUTTON EVT_COMMAND EVT_KEY_DOWN EVT_LIST_ITEM_ACTIVATED EVT_LIST_ITEM_DESELECTED EVT_LIST_ITEM_SELECTED EVT_MOUSE_EVENTS EVT_PAINT EVT_TOOL EVT_CHOICE);
 use base 'Wx::Panel';
 
-use Locale::TextDomain ('slic3r');
+use Slic3r::i18n::TextDomain ('slic3r');
 
 use constant TB_MORE    => &Wx::NewId;
 use constant TB_LESS    => &Wx::NewId;
@@ -602,7 +602,7 @@ sub export_gcode2 {
     my ($print, $output_file, %params) = @_;
     $Slic3r::Geometry::Clipper::clipper = Math::Clipper->new;
     local $SIG{'KILL'} = sub {
-        Slic3r::debugf __("Exporting cancelled; exiting thread...\n");
+        Slic3r::debugf __("Exporting cancelled; exiting thread…\n");
         threads->exit();
     } if $Slic3r::have_threads;
     

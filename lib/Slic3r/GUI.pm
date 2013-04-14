@@ -17,7 +17,7 @@ use Slic3r::GUI::Tab;
 use Wx 0.9901 qw(:bitmap :dialog :frame :icon :id :misc :systemsettings :toplevelwindow);
 use Wx::Event qw(EVT_CLOSE EVT_MENU);
 use base 'Wx::App';
-use Locale::TextDomain ('slic3r', '.');
+use Slic3r::i18n::TextDomain ('slic3r');
 
 use constant MI_LOAD_CONF     => &Wx::NewId;
 use constant MI_EXPORT_CONF   => &Wx::NewId;
@@ -261,7 +261,7 @@ sub save_settings {
 package Slic3r::GUI::ProgressStatusBar;
 use Wx qw(:gauge :misc);
 use base 'Wx::StatusBar';
-use Locale::TextDomain ('slic3r', '.');
+use Slic3r::i18n::TextDomain ('slic3r');
 
 sub new {
     my $class = shift;

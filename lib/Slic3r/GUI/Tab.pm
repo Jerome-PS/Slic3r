@@ -8,7 +8,7 @@ use List::Util qw(first);
 use Wx qw(:bookctrl :dialog :keycode :icon :id :misc :panel :sizer :treectrl :window);
 use Wx::Event qw(EVT_BUTTON EVT_CHOICE EVT_KEY_DOWN EVT_TREE_SEL_CHANGED);
 use base 'Wx::Panel';
-use Locale::TextDomain ('slic3r', '.');
+use Slic3r::i18n::TextDomain ('slic3r');
 
 sub new {
     my $class = shift;
@@ -385,7 +385,7 @@ sub load_config_file {
 
 package Slic3r::GUI::Tab::Print;
 use base 'Slic3r::GUI::Tab';
-use Locale::TextDomain ('slic3r', '.');
+use Slic3r::i18n::TextDomain ('slic3r');
 
 sub name { 'print' }
 sub title { __('Print Settings') }
@@ -535,7 +535,7 @@ sub hidden_options { !$Slic3r::have_threads ? qw(threads) : () }
 
 package Slic3r::GUI::Tab::Filament;
 use base 'Slic3r::GUI::Tab';
-use Locale::TextDomain ('slic3r', '.');
+use Slic3r::i18n::TextDomain ('slic3r');
 
 sub name { 'filament' }
 sub title { __('Filament Settings') }
@@ -629,7 +629,7 @@ sub on_value_change {
 
 package Slic3r::GUI::Tab::Printer;
 use base 'Slic3r::GUI::Tab';
-use Locale::TextDomain ('slic3r', '.');
+use Slic3r::i18n::TextDomain ('slic3r');
 
 sub name { 'printer' }
 sub title { __('Printer Settings') }
@@ -854,7 +854,7 @@ package Slic3r::GUI::SavePresetWindow;
 use Wx qw(:combobox :dialog :id :misc :sizer);
 use Wx::Event qw(EVT_BUTTON EVT_TEXT_ENTER);
 use base 'Wx::Dialog';
-use Locale::TextDomain ('slic3r', '.');
+use Slic3r::i18n::TextDomain ('slic3r');
 
 sub new {
     my $class = shift;
